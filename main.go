@@ -1,11 +1,13 @@
 package main
 
 import (
+	"context"
 	"log"
 	"net/http"
 	"os"
+	"os/signal"
+	"time"
 
-	controllers "github.com/EduRoDev/BackEnd-Hotel-App-v2/Controllers"
 	"github.com/gorilla/mux"
 )
 
@@ -15,12 +17,33 @@ func main() {
 	// Crear un nuevo router con Gorilla Mux
 	router := mux.NewRouter()
 
-	// Registrar la ruta para procesar pagos
-	router.HandleFunc("/api/pay", controllers.PaymentHandler(logger)).Methods("POST")
 
 	// Iniciar el servidor
-	log.Println("Starting server on :8080")
-	if err := http.ListenAndServe(":8080", router); err != nil {
-		log.Fatalf("Could not start server: %s\n", err)
+	srv := &http.Server{
+		Addr:         ":8080",
+		Handler:      router,
+		IdleTimeout:  120 * time.Second,
+		ReadTimeout:  1 * time.Second,
+		WriteTimeout: 1 * time.Second,
 	}
+
+	go func() {
+		logger.Println("Starting server on port :8080")
+		err := srv.ListenAndServe()
+		if err != nil {
+			logger.Fatal(err)
+		}
+	}()
+
+	sigChan := make(chan os.Signal, 1)
+	signal.Notify(sigChan, os.Interrupt)
+
+	sig := <-sigChan
+	logger.Println("Received terminated, graceful shutdown", sig)
+	tc, err := context.WithTimeout(context.Background(), 30*time.Second)
+
+	if err != nil {
+		logger.Println(err)
+	}
+	srv.Shutdown(tc)
 }
