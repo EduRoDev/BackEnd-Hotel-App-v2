@@ -8,15 +8,30 @@ import (
 	"os/signal"
 	"time"
 
+	controllers "github.com/EduRoDev/BackEnd-Hotel-App-v2/Pkg/Controllers"
+	database "github.com/EduRoDev/BackEnd-Hotel-App-v2/Pkg/Database"
 	"github.com/gorilla/mux"
 )
 
 func main() {
-	logger := log.New(os.Stdout, "PAYMENT_API: ", log.LstdFlags)
+	// Iniciar la base de datos
+	database.Init()
+
+	// Crear un nuevo logger
+	logger := log.New(os.Stdout, "HOTEL-API: ", log.LstdFlags)
+
+	// Crear un nuevo controlador de usuario
+	controller := controllers.NewUserController(logger)
 
 	// Crear un nuevo router con Gorilla Mux
 	router := mux.NewRouter()
 
+	// Rutas de usuario
+	router.HandleFunc("/user", controller.Get).Methods("GET")
+	router.HandleFunc("/user/{id}", controller.GetID).Methods("GET")
+	router.HandleFunc("/user", controller.Post).Methods("POST")
+	router.HandleFunc("/user/{id}", controller.Modify).Methods("PUT")
+	router.HandleFunc("/user/{id}", controller.Delete).Methods("DELETE")
 
 	// Iniciar el servidor
 	srv := &http.Server{

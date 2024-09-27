@@ -1,11 +1,23 @@
 -- Usuario
 CREATE TABLE Usuario (
     id_usuario INT AUTO_INCREMENT PRIMARY KEY,
+	tipo_documeto ENUM('CC','TI','TE','PP','PPT','NIT'),
+	numero_documento VARCHAR(50) UNIQUE,
     nombre VARCHAR(100),
     apellido VARCHAR(100),
     email VARCHAR(100) UNIQUE,
     telefono VARCHAR(20),
-    direccion VARCHAR(255)
+);
+
+CREATE TABLE DatosAdicionalesUsuario (
+    id_usuario INT PRIMARY KEY,
+    nacionalidad VARCHAR(100),
+    ciudad VARCHAR(100),
+    pais VARCHAR(100),
+    ocupacion VARCHAR(100),
+    pais_procedencia VARCHAR(100),
+    direccion VARCHAR(255),  
+    FOREIGN KEY (id_usuario) REFERENCES Usuario(id_usuario)
 );
 
 -- Habitación
@@ -63,7 +75,7 @@ CREATE TABLE Personal (
     id_personal INT AUTO_INCREMENT PRIMARY KEY,
     nombre VARCHAR(100),
     apellido VARCHAR(100),
-    rol ENUM('recepcionista','limpiesa','gerente', 'botones', 'supervisor')
+    rol ENUM('recepcionista',--'limpieza'-- ,'gerente', 'botones', 'supervisor')
 );
 
 -- Factura Electrónica
