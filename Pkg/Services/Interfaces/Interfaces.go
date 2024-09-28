@@ -5,15 +5,15 @@ import entities "github.com/EduRoDev/BackEnd-Hotel-App-v2/Pkg/Models/Entities"
 type User interface {
 	Get() []entities.Usuario
 	GetID(User entities.Usuario) entities.Usuario
-	Asing(User entities.Usuario) map[string]interface{}
+	Create(User entities.Usuario) map[string]interface{}
 	Mod(User entities.Usuario) map[string]interface{}
 	Del(User entities.Usuario) map[string]interface{}
 }
 
-type Habitation interface {
+type Habitacion interface {
 	Get() []entities.Habitacion
 	GetID(Habitacion entities.Habitacion) entities.Habitacion
-	Asing(Habitacion entities.Habitacion) map[string]interface{}
+	Create(Habitacion entities.Habitacion) map[string]interface{}
 	Mod(Habitacion entities.Habitacion) map[string]interface{}
 	Del(Habitacion entities.Habitacion) map[string]interface{}
 }

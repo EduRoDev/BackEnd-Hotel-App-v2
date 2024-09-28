@@ -7,17 +7,12 @@ CREATE TABLE Usuario (
     apellido VARCHAR(100),
     email VARCHAR(100) UNIQUE,
     telefono VARCHAR(20),
-);
-
-CREATE TABLE DatosAdicionalesUsuario (
-    id_usuario INT PRIMARY KEY,
     nacionalidad VARCHAR(100),
     ciudad VARCHAR(100),
     pais VARCHAR(100),
     ocupacion VARCHAR(100),
     pais_procedencia VARCHAR(100),
-    direccion VARCHAR(255),  
-    FOREIGN KEY (id_usuario) REFERENCES Usuario(id_usuario)
+    direccion VARCHAR(255)
 );
 
 -- Habitación

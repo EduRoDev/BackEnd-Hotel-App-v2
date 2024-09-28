@@ -20,18 +20,26 @@ func main() {
 	// Crear un nuevo logger
 	logger := log.New(os.Stdout, "HOTEL-API: ", log.LstdFlags)
 
-	// Crear un nuevo controlador de usuario
-	controller := controllers.NewUserController(logger)
+	// Crear un nuevo controlador
+	controllerUser := controllers.NewUserController(logger)
+	controllerRoom := controllers.NewRoomController(logger)
 
 	// Crear un nuevo router con Gorilla Mux
 	router := mux.NewRouter()
 
 	// Rutas de usuario
-	router.HandleFunc("/user", controller.Get).Methods("GET")
-	router.HandleFunc("/user/{id}", controller.GetID).Methods("GET")
-	router.HandleFunc("/user", controller.Post).Methods("POST")
-	router.HandleFunc("/user/{id}", controller.Modify).Methods("PUT")
-	router.HandleFunc("/user/{id}", controller.Delete).Methods("DELETE")
+	router.HandleFunc("/user", controllerUser.Get).Methods("GET")
+	router.HandleFunc("/user/{id}", controllerUser.GetID).Methods("GET")
+	router.HandleFunc("/user", controllerUser.Post).Methods("POST")
+	router.HandleFunc("/user/{id}", controllerUser.Modify).Methods("PUT")
+	router.HandleFunc("/user/{id}", controllerUser.Delete).Methods("DELETE")
+
+	// Rutas de habitacion
+	router.HandleFunc("/habitacion", controllerRoom.Get).Methods("GET")
+	router.HandleFunc("/habitacion/{id}", controllerRoom.GetID).Methods("GET")
+	router.HandleFunc("/habitacion", controllerRoom.Post).Methods("POST")
+	router.HandleFunc("/habitacion/{id}", controllerRoom.Modify).Methods("PUT")
+	router.HandleFunc("/habitacion/{id}", controllerRoom.Delete).Methods("DELETE")
 
 	// Iniciar el servidor
 	srv := &http.Server{
@@ -42,6 +50,7 @@ func main() {
 		WriteTimeout: 1 * time.Second,
 	}
 
+	// Iniciar el servidor en un goroutine
 	go func() {
 		logger.Println("Starting server on port :8080")
 		err := srv.ListenAndServe()
@@ -50,6 +59,7 @@ func main() {
 		}
 	}()
 
+	// Iniciar la funcion de shutdown
 	sigChan := make(chan os.Signal, 1)
 	signal.Notify(sigChan, os.Interrupt)
 
@@ -57,6 +67,7 @@ func main() {
 	logger.Println("Received terminated, graceful shutdown", sig)
 	tc, err := context.WithTimeout(context.Background(), 30*time.Second)
 
+	// Cerrar el servidor
 	if err != nil {
 		logger.Println(err)
 	}
