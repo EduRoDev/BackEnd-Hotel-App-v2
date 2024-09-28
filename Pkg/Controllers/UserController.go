@@ -6,6 +6,7 @@ import (
 	"net/http"
 	"strconv"
 
+	helpers "github.com/EduRoDev/BackEnd-Hotel-App-v2/Pkg/Helpers"
 	dto "github.com/EduRoDev/BackEnd-Hotel-App-v2/Pkg/Models/Dto"
 	entities "github.com/EduRoDev/BackEnd-Hotel-App-v2/Pkg/Models/Entities"
 	impl "github.com/EduRoDev/BackEnd-Hotel-App-v2/Pkg/Services/Impl"
@@ -34,9 +35,7 @@ func (u UserController) GetID(w http.ResponseWriter, r *http.Request) {
 	vr := mux.Vars(r)
 	idStr, err := strconv.Atoi(vr["id"])
 	if err != nil {
-		rp := map[string]interface{}{
-			"error":   err,
-			"message": "Error al obtener usuario"}
+		rp := helpers.Error(err, "Error al obtener usuario")
 		w.WriteHeader(http.StatusNotFound)
 		json.NewEncoder(w).Encode(rp)
 		return
@@ -51,10 +50,7 @@ func (u UserController) Post(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
 	var user dto.UsuarioDTO
 	if err := json.NewDecoder(r.Body).Decode(&user); err != nil {
-		rp := map[string]string{
-			"error":   err.Error(),
-			"message": "Error al obtener usuario",
-		}
+		rp := helpers.Error(err, "Error al obtener usuario")
 		w.WriteHeader(http.StatusNotFound)
 		json.NewEncoder(w).Encode(rp)
 		return
@@ -74,7 +70,7 @@ func (u UserController) Post(w http.ResponseWriter, r *http.Request) {
 		Direccion:       user.Direccion,
 	}
 
-	findUser := u.Us.Asing(data)
+	findUser := u.Us.Create(data)
 	w.WriteHeader(http.StatusCreated)
 	json.NewEncoder(w).Encode(findUser)
 }
@@ -84,9 +80,7 @@ func (u UserController) Modify(w http.ResponseWriter, r *http.Request) {
 	vr := mux.Vars(r)
 	idStr, err := strconv.Atoi(vr["id"])
 	if err != nil {
-		rp := map[string]interface{}{
-			"error":   err,
-			"message": "Error al obtener usuario"}
+		rp := helpers.Error(err, "Error al obtener usuario")
 		w.WriteHeader(http.StatusNotFound)
 		json.NewEncoder(w).Encode(rp)
 		return
@@ -94,7 +88,7 @@ func (u UserController) Modify(w http.ResponseWriter, r *http.Request) {
 
 	var user dto.UsuarioDTO
 	if err := json.NewDecoder(r.Body).Decode(&user); err != nil {
-		rp := map[string]interface{}{"error": err, "message": "Error al obtener usuario"}
+		rp := helpers.Error(err, "Error al obtener usuario")
 		w.WriteHeader(http.StatusNotFound)
 		json.NewEncoder(w).Encode(rp)
 		return
@@ -126,9 +120,7 @@ func (u UserController) Delete(w http.ResponseWriter, r *http.Request) {
 	vr := mux.Vars(r)
 	idStr, err := strconv.Atoi(vr["id"])
 	if err != nil {
-		rp := map[string]interface{}{
-			"error":   err,
-			"message": "Error al obtener usuario"}
+		rp := helpers.Error(err, "Error al obtener usuario")
 		w.WriteHeader(http.StatusNotFound)
 		json.NewEncoder(w).Encode(rp)
 		return
