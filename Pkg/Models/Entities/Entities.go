@@ -19,6 +19,7 @@ type Usuario struct {
 	Direccion       string `gorm:"size:255" json:"direccion"`
 }
 
+// Recibir un slice de Usuario
 type Usuarios []Usuario
 
 // Definir TableName para Usuario
@@ -35,6 +36,7 @@ type Habitacion struct {
 	Estado string  `gorm:"type:enum('disponible','reservada','ocupada','no disponible')" json:"estado"`
 }
 
+// Recibir un slice de Habitacion
 type Habitaciones []Habitacion
 
 // Definir TableName para Habitacion
@@ -53,6 +55,7 @@ type Reserva struct {
 	Habitacion   Habitacion `gorm:"foreignKey:IDHabitacion" json:"habitacion"`
 }
 
+// Recibir un slice de Reserva
 type Reservas []Reserva
 
 // Definir TableName para Reserva
@@ -70,6 +73,7 @@ type Pago struct {
 	Reserva    Reserva   `gorm:"foreignKey:IDReserva" json:"reserva"`
 }
 
+// Recibir un slice de Pago
 type Pagos []Pago
 
 // Definir TableName para Pago
@@ -88,6 +92,7 @@ type Llave struct {
 	Habitacion   Habitacion `gorm:"foreignKey:IDHabitacion" json:"habitacion"`
 }
 
+// Recibir un slice de Llave
 type Llaves []Llave
 
 // Definir TableName para Llave
@@ -104,6 +109,7 @@ type CheckInCheckOut struct {
 	Reserva       Reserva   `gorm:"foreignKey:IDReserva" json:"reserva"`
 }
 
+// Recibir un slice de CheckInCheckOut
 type CheckInCheckOuts []CheckInCheckOut
 
 // Definir TableName para CheckInCheckOut
@@ -119,6 +125,7 @@ type Personal struct {
 	Rol      string `gorm:"type:enum('recepcionista','limpieza','gerente','botones','supervisor')" json:"rol"`
 }
 
+// Recibir un slice de Personal
 type Personals []Personal
 
 // Definir TableName para Personal
@@ -135,6 +142,7 @@ type FacturaElectronica struct {
 	Pago         Pago      `gorm:"foreignKey:IDPago" json:"pago"`
 }
 
+// Recibir un slice de FacturaElectronica
 type FacturaElectronicas []FacturaElectronica
 
 // Definir TableName para FacturaElectronica
@@ -152,6 +160,7 @@ type PersonalHabitacion struct {
 	Habitacion      Habitacion `gorm:"foreignKey:IDHabitacion" json:"habitacion"`
 }
 
+// Recibir un slice de PersonalHabitacion
 type PersonalHabitacions []PersonalHabitacion
 
 // Definir TableName para PersonalHabitacion
