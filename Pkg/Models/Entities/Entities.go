@@ -3,7 +3,6 @@ package entities
 import "time"
 
 // Entidad Usuario
-// trabajada
 type Usuario struct {
 	ID              int    `gorm:"primaryKey;autoIncrement" json:"id_usuario"`
 	TipoDocumento   string `gorm:"type:enum('CC','TI','TE','PP','PPT','NIT')" json:"tipo_documento"`
@@ -20,11 +19,14 @@ type Usuario struct {
 	Direccion       string `gorm:"size:255" json:"direccion"`
 }
 
-// Entidad Usuarios
 type Usuarios []Usuario
 
+// Definir TableName para Usuario
+func (Usuario) TableName() string {
+	return "usuario"
+}
+
 // Entidad Habitacion
-// trabajada
 type Habitacion struct {
 	ID     int     `gorm:"primaryKey;autoIncrement" json:"id_habitacion"`
 	Numero string  `gorm:"size:10" json:"numero"`
@@ -35,8 +37,12 @@ type Habitacion struct {
 
 type Habitaciones []Habitacion
 
-// Entidad Reserva
+// Definir TableName para Habitacion
+func (Habitacion) TableName() string {
+	return "habitacion"
+}
 
+// Entidad Reserva
 type Reserva struct {
 	ID           int        `gorm:"primaryKey;autoIncrement" json:"id_reserva"`
 	FechaReserva time.Time  `json:"fecha_reserva"`
@@ -49,6 +55,11 @@ type Reserva struct {
 
 type Reservas []Reserva
 
+// Definir TableName para Reserva
+func (Reserva) TableName() string {
+	return "reserva"
+}
+
 // Entidad Pago
 type Pago struct {
 	ID         int       `gorm:"primaryKey;autoIncrement" json:"id_pago"`
@@ -60,6 +71,11 @@ type Pago struct {
 }
 
 type Pagos []Pago
+
+// Definir TableName para Pago
+func (Pago) TableName() string {
+	return "pago"
+}
 
 // Entidad Llave
 type Llave struct {
@@ -74,6 +90,11 @@ type Llave struct {
 
 type Llaves []Llave
 
+// Definir TableName para Llave
+func (Llave) TableName() string {
+	return "llave"
+}
+
 // Entidad CheckInCheckOut
 type CheckInCheckOut struct {
 	ID            int       `gorm:"primaryKey;autoIncrement" json:"id_checkin"`
@@ -85,6 +106,11 @@ type CheckInCheckOut struct {
 
 type CheckInCheckOuts []CheckInCheckOut
 
+// Definir TableName para CheckInCheckOut
+func (CheckInCheckOut) TableName() string {
+	return "checkin_checkout"
+}
+
 // Entidad Personal
 type Personal struct {
 	ID       int    `gorm:"primaryKey;autoIncrement" json:"id_personal"`
@@ -93,7 +119,12 @@ type Personal struct {
 	Rol      string `gorm:"type:enum('recepcionista','limpieza','gerente','botones','supervisor')" json:"rol"`
 }
 
-type Personales []Personal
+type Personals []Personal
+
+// Definir TableName para Personal
+func (Personal) TableName() string {
+	return "personal"
+}
 
 // Entidad FacturaElectronica
 type FacturaElectronica struct {
@@ -106,6 +137,11 @@ type FacturaElectronica struct {
 
 type FacturaElectronicas []FacturaElectronica
 
+// Definir TableName para FacturaElectronica
+func (FacturaElectronica) TableName() string {
+	return "factura_electronica"
+}
+
 // Entidad PersonalHabitacion
 type PersonalHabitacion struct {
 	ID              int        `gorm:"primaryKey;autoIncrement" json:"id_personal_habitacion"`
@@ -116,4 +152,9 @@ type PersonalHabitacion struct {
 	Habitacion      Habitacion `gorm:"foreignKey:IDHabitacion" json:"habitacion"`
 }
 
-type PersonalHabitaciones []PersonalHabitacion
+type PersonalHabitacions []PersonalHabitacion
+
+// Definir TableName para PersonalHabitacion
+func (PersonalHabitacion) TableName() string {
+	return "personal_habitacion"
+}
