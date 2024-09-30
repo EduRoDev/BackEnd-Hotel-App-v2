@@ -23,6 +23,7 @@ func main() {
 	// Crear un nuevo controlador
 	controllerUser := controllers.NewUserController(logger)
 	controllerRoom := controllers.NewRoomController(logger)
+	controllerReservation := controllers.NewReservationController(logger)
 
 	// Crear un nuevo router con Gorilla Mux
 	router := mux.NewRouter()
@@ -40,6 +41,13 @@ func main() {
 	router.HandleFunc("/habitacion", controllerRoom.Post).Methods("POST")
 	router.HandleFunc("/habitacion/{id}", controllerRoom.Modify).Methods("PUT")
 	router.HandleFunc("/habitacion/{id}", controllerRoom.Delete).Methods("DELETE")
+
+	// Rutas de reserva
+	router.HandleFunc("/reserva", controllerReservation.Get).Methods("GET")
+	router.HandleFunc("/reserva/{id}", controllerReservation.GetID).Methods("GET")
+	router.HandleFunc("/reserva", controllerReservation.Create).Methods("POST")
+	router.HandleFunc("/reserva/{id}", controllerReservation.Mod).Methods("PUT")
+	router.HandleFunc("/reserva/{id}", controllerReservation.Del).Methods("DELETE")
 
 	// Iniciar el servidor
 	srv := &http.Server{

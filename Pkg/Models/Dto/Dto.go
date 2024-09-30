@@ -31,10 +31,10 @@ type HabitacionDTO struct {
 // DTO para Reserva
 type ReservaDTO struct {
 	ID           int       `json:"id_reserva"`
-	IDUsuario    uint      `json:"id_usuario"`
-	IDHabitacion uint      `json:"id_habitacion"`
 	FechaReserva time.Time `json:"fecha_reserva"`
 	Estado       string    `json:"estado"`
+	IDUsuario    int       `json:"id_usuario"`
+	IDHabitacion int       `json:"id_habitacion"`
 }
 
 // DTO para Pago

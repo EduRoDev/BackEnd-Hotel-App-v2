@@ -42,6 +42,13 @@ func (rm RoomController) GetID(w http.ResponseWriter, r *http.Request) {
 	}
 	habitacion := entities.Habitacion{ID: idStr}
 	findHabitacion := rm.Hb.GetID(habitacion)
+
+	if findHabitacion.ID == 0 {
+		rp := helpers.Error(err, "Error al obtener habitacion")
+		w.WriteHeader(http.StatusNotFound)
+		json.NewEncoder(w).Encode(rp)
+		return
+	}
 	w.WriteHeader(http.StatusAccepted)
 	json.NewEncoder(w).Encode(findHabitacion)
 }

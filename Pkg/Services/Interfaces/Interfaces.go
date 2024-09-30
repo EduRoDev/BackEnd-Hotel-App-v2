@@ -74,10 +74,4 @@ type PersonalHabitacion interface {
 	Del(PersonalHabitacion entities.PersonalHabitacion) map[string]interface{}
 }
 
-type Admin interface {
-	Get() []entities.Usuario
-	GetID(User entities.Usuario) entities.Usuario
-	Asing(User entities.Usuario) map[string]interface{}
-	Mod(User entities.Usuario) map[string]interface{}
-	Del(User entities.Usuario) map[string]interface{}
-}
+

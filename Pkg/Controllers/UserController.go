@@ -42,6 +42,14 @@ func (u UserController) GetID(w http.ResponseWriter, r *http.Request) {
 	}
 	user := entities.Usuario{ID: idStr}
 	findUser := u.Us.GetID(user)
+
+	if findUser.ID == 0 {
+		rp := helpers.Error(err, "Error al obtener usuario")
+		w.WriteHeader(http.StatusNotFound)
+		json.NewEncoder(w).Encode(rp)
+		return
+	}
+
 	w.WriteHeader(http.StatusAccepted)
 	json.NewEncoder(w).Encode(findUser)
 }
@@ -71,6 +79,13 @@ func (u UserController) Post(w http.ResponseWriter, r *http.Request) {
 	}
 
 	findUser := u.Us.Create(data)
+	var err error
+	if findUser["error"] != nil {
+		rp := helpers.Error(err, "Error al crear usuario")
+		w.WriteHeader(http.StatusNotFound)
+		json.NewEncoder(w).Encode(rp)
+		return
+	}
 	w.WriteHeader(http.StatusCreated)
 	json.NewEncoder(w).Encode(findUser)
 }
