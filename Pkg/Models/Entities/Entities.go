@@ -3,6 +3,7 @@ package entities
 import "time"
 
 // Entidad Usuario
+// trabajada
 type Usuario struct {
 	ID              int    `gorm:"primaryKey;autoIncrement" json:"id_usuario"`
 	TipoDocumento   string `gorm:"type:enum('CC','TI','TE','PP','PPT','NIT')" json:"tipo_documento"`
@@ -23,6 +24,7 @@ type Usuario struct {
 type Usuarios []Usuario
 
 // Entidad Habitacion
+// trabajada
 type Habitacion struct {
 	ID     int     `gorm:"primaryKey;autoIncrement" json:"id_habitacion"`
 	Numero string  `gorm:"size:10" json:"numero"`
@@ -34,12 +36,13 @@ type Habitacion struct {
 type Habitaciones []Habitacion
 
 // Entidad Reserva
+
 type Reserva struct {
 	ID           int        `gorm:"primaryKey;autoIncrement" json:"id_reserva"`
-	IDUsuario    int        `json:"id_usuario"`
-	IDHabitacion int        `json:"id_habitacion"`
 	FechaReserva time.Time  `json:"fecha_reserva"`
 	Estado       string     `gorm:"type:enum('confirmada','cancelada')" json:"estado"`
+	IDUsuario    int        `json:"id_usuario"`
+	IDHabitacion int        `json:"id_habitacion"`
 	Usuario      Usuario    `gorm:"foreignKey:IDUsuario" json:"usuario"`
 	Habitacion   Habitacion `gorm:"foreignKey:IDHabitacion" json:"habitacion"`
 }
