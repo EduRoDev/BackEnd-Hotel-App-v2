@@ -68,7 +68,7 @@ func (rs ReservationController) Create(w http.ResponseWriter, r *http.Request) {
 		IDUsuario:    reserva.IDUsuario,
 		IDHabitacion: reserva.IDHabitacion,
 	}
-	findReserva := rs.Rs.Asing(data)
+	findReserva := rs.Rs.Create(data)
 	w.WriteHeader(http.StatusCreated)
 	json.NewEncoder(w).Encode(findReserva)
 }
