@@ -10,7 +10,7 @@ type Reserva struct{}
 
 func (r Reserva) Get() []entities.Reserva {
 	var reserva []entities.Reserva
-	result := database.Database.Find(&reserva).Preload("usuarios", "habitacions")
+	result := database.Database.Preload("Usuario").Preload("Habitacion").Find(&reserva)
 	if result.Error != nil {
 		return nil
 	}
@@ -25,8 +25,7 @@ func (r Reserva) GetID(reserva entities.Reserva) entities.Reserva {
 	return reserva
 }
 
-
-func (r Reserva) Asing(Reserva entities.Reserva) map[string]interface{} {
+func (r Reserva) Create(Reserva entities.Reserva) map[string]interface{} {
 	result := database.Database.Create(&Reserva)
 	if result.Error != nil {
 		return helpers.Error(result.Error, "Error al asignar reserva")

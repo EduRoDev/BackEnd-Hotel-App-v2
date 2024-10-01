@@ -21,7 +21,7 @@ type Habitacion interface {
 type Reservation interface {
 	Get() []entities.Reserva
 	GetID(Reserva entities.Reserva) entities.Reserva
-	Asing(Reserva entities.Reserva) map[string]interface{}
+	Create(Reserva entities.Reserva) map[string]interface{}
 	Mod(Reserva entities.Reserva) map[string]interface{}
 	Del(Reserva entities.Reserva) map[string]interface{}
 }
@@ -29,7 +29,7 @@ type Reservation interface {
 type Payment interface {
 	Get() []entities.Pago
 	GetID(Pago entities.Pago) entities.Pago
-	Asing(Pago entities.Pago) map[string]interface{}
+	Create(Pago entities.Pago) map[string]interface{}
 	Mod(Pago entities.Pago) map[string]interface{}
 	Del(Pago entities.Pago) map[string]interface{}
 }
@@ -37,7 +37,7 @@ type Payment interface {
 type Key interface {
 	Get() []entities.Llave
 	GetID(Llave entities.Llave) entities.Llave
-	Asing(Llave entities.Llave) map[string]interface{}
+	Create(Llave entities.Llave) map[string]interface{}
 	Mod(Llave entities.Llave) map[string]interface{}
 	Del(Llave entities.Llave) map[string]interface{}
 }
@@ -73,5 +73,3 @@ type PersonalHabitacion interface {
 	Mod(PersonalHabitacion entities.PersonalHabitacion) map[string]interface{}
 	Del(PersonalHabitacion entities.PersonalHabitacion) map[string]interface{}
 }
-
-

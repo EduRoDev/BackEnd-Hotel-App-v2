@@ -24,6 +24,7 @@ func main() {
 	controllerUser := controllers.NewUserController(logger)
 	controllerRoom := controllers.NewRoomController(logger)
 	controllerReservation := controllers.NewReservationController(logger)
+	controllerPayment := controllers.NewPaymentController(logger)
 
 	// Crear un nuevo router con Gorilla Mux
 	router := mux.NewRouter()
@@ -48,6 +49,12 @@ func main() {
 	router.HandleFunc("/reserva", controllerReservation.Create).Methods("POST")
 	router.HandleFunc("/reserva/{id}", controllerReservation.Mod).Methods("PUT")
 	router.HandleFunc("/reserva/{id}", controllerReservation.Del).Methods("DELETE")
+
+	// Rutas de pago
+	router.HandleFunc("/pago", controllerPayment.Get).Methods("GET")
+	router.HandleFunc("/pago/{id}", controllerPayment.GetID).Methods("GET")
+	router.HandleFunc("/pago", controllerPayment.Create).Methods("POST")
+	router.HandleFunc("/pago/{id}", controllerPayment.Mod).Methods("PUT")
 
 	// Iniciar el servidor
 	srv := &http.Server{
