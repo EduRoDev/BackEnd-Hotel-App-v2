@@ -122,3 +122,8 @@ func (py PaymentController) Del(w http.ResponseWriter, r *http.Request) {
 	w.WriteHeader(http.StatusAccepted)
 	json.NewEncoder(w).Encode(findPago)
 }
+
+func (py PaymentController) Cancel(w http.ResponseWriter, r *http.Request) {
+	w.Header().Set("Content-Type", "application/json")
+
+}

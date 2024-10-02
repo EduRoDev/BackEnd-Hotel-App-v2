@@ -32,7 +32,7 @@ type Habitacion struct {
 	Numero string  `gorm:"size:10" json:"numero"`
 	Tipo   string  `gorm:"type:enum('sencilla','doble','suite')" json:"tipo"`
 	Precio float64 `gorm:"type:decimal(10,2)" json:"precio"`
-	Estado string  `gorm:"type:enum('disponible','reservada','ocupada','no disponible')" json:"estado"`
+	Estado string  `gorm:"size:20" json:"estado"`
 }
 
 type Habitaciones []Habitacion
@@ -46,7 +46,7 @@ func (Habitacion) TableName() string {
 type Reserva struct {
 	ID           int        `gorm:"primaryKey;autoIncrement" json:"id_reserva"`
 	FechaReserva time.Time  `json:"fecha_reserva"`
-	Estado       string     `gorm:"type:enum('confirmada','cancelada')" json:"estado"`
+	Estado       string     `gorm:"type:enum('confirmada','pendiente','cancelada')" json:"estado"`
 	IDUsuario    int        `json:"id_usuario"`
 	IDHabitacion int        `json:"id_habitacion"`
 	Usuario      Usuario    `gorm:"foreignKey:IDUsuario" json:"usuario"`

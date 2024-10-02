@@ -13,6 +13,7 @@ type User interface {
 type Habitacion interface {
 	Get() []entities.Habitacion
 	GetID(Habitacion entities.Habitacion) entities.Habitacion
+	GetAvailable() []entities.Habitacion
 	Create(Habitacion entities.Habitacion) map[string]interface{}
 	Mod(Habitacion entities.Habitacion) map[string]interface{}
 	Del(Habitacion entities.Habitacion) map[string]interface{}
@@ -24,6 +25,7 @@ type Reservation interface {
 	Create(Reserva entities.Reserva) map[string]interface{}
 	Mod(Reserva entities.Reserva) map[string]interface{}
 	Del(Reserva entities.Reserva) map[string]interface{}
+	CancelReserva(reservaId int) map[string]interface{}
 }
 
 type Payment interface {
