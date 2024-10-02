@@ -39,6 +39,7 @@ func main() {
 	// Rutas de habitacion
 	router.HandleFunc("/habitacion", controllerRoom.Get).Methods("GET")
 	router.HandleFunc("/habitacion/{id}", controllerRoom.GetID).Methods("GET")
+	router.HandleFunc("/disponible", controllerRoom.GetAvailable).Methods("GET")
 	router.HandleFunc("/habitacion", controllerRoom.Post).Methods("POST")
 	router.HandleFunc("/habitacion/{id}", controllerRoom.Modify).Methods("PUT")
 	router.HandleFunc("/habitacion/{id}", controllerRoom.Delete).Methods("DELETE")
@@ -55,6 +56,7 @@ func main() {
 	router.HandleFunc("/pago/{id}", controllerPayment.GetID).Methods("GET")
 	router.HandleFunc("/pago", controllerPayment.Create).Methods("POST")
 	router.HandleFunc("/pago/{id}", controllerPayment.Mod).Methods("PUT")
+	router.HandleFunc("/pago/{id}", controllerPayment.Del).Methods("DELETE")
 
 	// Iniciar el servidor
 	srv := &http.Server{

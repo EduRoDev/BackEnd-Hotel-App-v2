@@ -26,11 +26,33 @@ func (r Reserva) GetID(reserva entities.Reserva) entities.Reserva {
 }
 
 func (r Reserva) Create(Reserva entities.Reserva) map[string]interface{} {
-	result := database.Database.Create(&Reserva)
-	if result.Error != nil {
-		return helpers.Error(result.Error, "Error al asignar reserva")
+	tx := database.Database.Begin()
+
+	var Habitacion entities.Habitacion
+	if tx.First(&Habitacion, Reserva.IDHabitacion).Error != nil {
+		tx.Rollback()
+		return helpers.Error(tx.Error, "Error al obtener habitacion")
 	}
-	return helpers.Success("Reserva asignada correctamente")
+
+	if Habitacion.Estado != "disponible" {
+		tx.Rollback()
+		return helpers.Error(tx.Error, "habitacion no disponible")
+	}
+
+	Habitacion.Estado = "reservada"
+	if err := tx.Save(&Habitacion).Error; err != nil {
+		tx.Rollback()
+		return helpers.Error(err, "Error al actualizar habitacion")
+	}
+
+	Reserva.Estado = "pendiente"
+	if err := tx.Create(&Reserva).Error; err != nil {
+		tx.Rollback()
+		return helpers.Error(err, "Error al crear reserva")
+	}
+
+	tx.Commit()
+	return helpers.Success("Reserva creada correctamente")
 }
 
 func (r Reserva) Mod(Reserva entities.Reserva) map[string]interface{} {
@@ -47,4 +69,32 @@ func (r Reserva) Del(reserva entities.Reserva) map[string]interface{} {
 		return helpers.Error(result.Error, "Error al eliminar reserva")
 	}
 	return helpers.Success("Reserva eliminada correctamente")
+}
+
+func (r Reserva) CancelReserva(reservaId int) map[string]interface{} {
+	tx := database.Database.Begin()
+	var reserva entities.Reserva
+	if tx.First(&reserva, reservaId).Error != nil {
+		tx.Rollback()
+		return helpers.Error(tx.Error, "Error al obtener reserva")
+	}
+	reserva.Estado = "cancelada"
+	if err := tx.Save(&reserva).Error; err != nil {
+		tx.Rollback()
+		return helpers.Error(err, "Error al cancelar reserva")
+	}
+
+	var Habitacion entities.Habitacion
+	if tx.First(&Habitacion, reserva.Habitacion.ID).Error != nil {
+		tx.Rollback()
+		return helpers.Error(tx.Error, "Error al obtener habitacion")
+	}
+
+	Habitacion.Estado = "disponible"
+	if err := tx.Save(&Habitacion).Error; err != nil {
+		tx.Rollback()
+		return helpers.Error(err, "Error al modificar habitacion")
+	}
+	tx.Commit()
+	return helpers.Success("Reserva cancelada correctamente")
 }

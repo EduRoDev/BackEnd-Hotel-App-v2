@@ -53,6 +53,24 @@ func (rm RoomController) GetID(w http.ResponseWriter, r *http.Request) {
 	json.NewEncoder(w).Encode(findHabitacion)
 }
 
+func (rm RoomController) GetAvailable(w http.ResponseWriter, r *http.Request) {
+	w.Header().Set("Content-Type", "application/json")
+
+	habitacionesDisponibles := rm.Hb.GetAvailable()
+
+	if habitacionesDisponibles == nil {
+		log.Println("No se encontraron habitaciones disponibles")
+		rp := helpers.Error(nil, "No se encontraron habitaciones disponibles")
+		w.WriteHeader(http.StatusNotFound)
+		json.NewEncoder(w).Encode(rp)
+		return
+	}
+
+	log.Println("Habitaciones disponibles:", habitacionesDisponibles)
+	w.WriteHeader(http.StatusOK)
+	json.NewEncoder(w).Encode(habitacionesDisponibles)
+}
+
 func (rm RoomController) Post(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
 	var habitacion dto.HabitacionDTO

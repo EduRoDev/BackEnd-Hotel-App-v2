@@ -25,6 +25,15 @@ func (h Habitacion) GetID(Habitacion entities.Habitacion) entities.Habitacion {
 	return Habitacion
 }
 
+func (h Habitacion) GetAvailable() []entities.Habitacion {
+	var habitacion []entities.Habitacion
+	result := database.Database.Where("estado = ?", "disponible").Find(&habitacion)
+	if result.Error != nil {
+		return []entities.Habitacion{}
+	}
+	return habitacion
+}
+
 func (h Habitacion) Create(Habitacion entities.Habitacion) map[string]interface{} {
 	result := database.Database.Create(&Habitacion)
 	if result.Error != nil {
