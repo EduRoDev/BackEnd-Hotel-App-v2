@@ -32,6 +32,8 @@ type HabitacionDTO struct {
 type ReservaDTO struct {
 	ID           int       `json:"id_reserva"`
 	FechaReserva time.Time `json:"fecha_reserva"`
+	FechaEntrada time.Time `json:"fecha_entrada"`
+	FechaSalida  time.Time `json:"fecha_salida"`
 	Estado       string    `json:"estado"`
 	IDUsuario    int       `json:"id_usuario"`
 	IDHabitacion int       `json:"id_habitacion"`
@@ -50,7 +52,6 @@ type PagoDTO struct {
 type LlaveDTO struct {
 	ID           int    `json:"id_llave"`
 	IDReserva    int    `json:"id_reserva"`
-	IDHabitacion int    `json:"id_habitacion"`
 	TipoLlave    string `json:"tipo_llave"`
 	EstadoLlave  string `json:"estado_llave"`
 }

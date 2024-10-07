@@ -85,7 +85,7 @@ func (r Reserva) CancelReserva(reservaId int) map[string]interface{} {
 	}
 
 	var Habitacion entities.Habitacion
-	if tx.First(&Habitacion, reserva.Habitacion.ID).Error != nil {
+	if tx.First(&Habitacion, reserva.IDHabitacion).Error != nil {
 		tx.Rollback()
 		return helpers.Error(tx.Error, "Error al obtener habitacion")
 	}

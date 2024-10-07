@@ -64,6 +64,8 @@ func (rs ReservationController) Create(w http.ResponseWriter, r *http.Request) {
 	data := entities.Reserva{
 		ID:           reserva.ID,
 		FechaReserva: reserva.FechaReserva,
+		FechaEntrada: reserva.FechaEntrada,
+		FechaSalida:  reserva.FechaSalida,
 		Estado:       reserva.Estado,
 		IDUsuario:    reserva.IDUsuario,
 		IDHabitacion: reserva.IDHabitacion,
@@ -97,6 +99,8 @@ func (rs ReservationController) Mod(w http.ResponseWriter, r *http.Request) {
 		IDUsuario:    reserva.IDUsuario,
 		IDHabitacion: reserva.IDHabitacion,
 		FechaReserva: reserva.FechaReserva,
+		FechaEntrada: reserva.FechaEntrada,
+		FechaSalida:  reserva.FechaSalida,
 		Estado:       reserva.Estado,
 	}
 
@@ -105,19 +109,58 @@ func (rs ReservationController) Mod(w http.ResponseWriter, r *http.Request) {
 	json.NewEncoder(w).Encode(findReserva)
 }
 
-func (rs ReservationController) Del(w http.ResponseWriter, r *http.Request) {
+func (rs ReservationController) Cancel(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
+
+	// Obtener el ID de la reserva desde los parámetros de la URL
 	vr := mux.Vars(r)
 	idStr, err := strconv.Atoi(vr["id"])
 	if err != nil {
-		rp := helpers.Error(err, "Error al obtener reserva")
-		w.WriteHeader(http.StatusNotFound)
+		rp := helpers.Error(err, "Error al obtener ID de la reserva")
+		w.WriteHeader(http.StatusBadRequest) // Cambiado a 400 Bad Request
+		json.NewEncoder(w).Encode(rp)
+		return
+	}
+
+	// Llamar al servicio para cancelar la reserva
+	resultado := rs.Rs.CancelReserva(idStr)
+
+	// Verificar si hubo un error en la operación
+	if resultado["status"] == "error" {
+		w.WriteHeader(http.StatusInternalServerError) // Error en el servidor si la operación falló
+		json.NewEncoder(w).Encode(resultado)
+		return
+	}
+
+	// Enviar respuesta de éxito si no hubo errores
+	w.WriteHeader(http.StatusAccepted) // 202 Accepted indica que la operación fue aceptada
+	json.NewEncoder(w).Encode(resultado)
+}
+
+func (rs ReservationController) Del(w http.ResponseWriter, r *http.Request) {
+	w.Header().Set("Content-Type", "application/json")
+
+	// Obtener el ID de la reserva desde los parámetros de la URL
+	vr := mux.Vars(r)
+	idStr, err := strconv.Atoi(vr["id"])
+	if err != nil {
+		rp := helpers.Error(err, "Error al obtener ID de la reserva")
+		w.WriteHeader(http.StatusBadRequest) // Cambiado a 400 Bad Request
 		json.NewEncoder(w).Encode(rp)
 		return
 	}
 
 	data := entities.Reserva{ID: idStr}
-	findReserva := rs.Rs.Del(data)
-	w.WriteHeader(http.StatusAccepted)
-	json.NewEncoder(w).Encode(findReserva)
+	resultado := rs.Rs.Del(data)
+
+	// Verificar si hubo un error en la operación
+	if resultado["status"] == "error" {
+		w.WriteHeader(http.StatusInternalServerError) // Error en el servidor si la operación falló
+		json.NewEncoder(w).Encode(resultado)
+		return
+	}
+
+	// Enviar respuesta de éxito si no hubo errores
+	w.WriteHeader(http.StatusAccepted) // 202 Accepted indica que la operación fue aceptada
+	json.NewEncoder(w).Encode(resultado)
 }

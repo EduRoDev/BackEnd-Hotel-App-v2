@@ -45,10 +45,12 @@ func (Habitacion) TableName() string {
 // Entidad Reserva
 type Reserva struct {
 	ID           int        `gorm:"primaryKey;autoIncrement" json:"id_reserva"`
-	FechaReserva time.Time  `json:"fecha_reserva"`
+	FechaReserva time.Time  `gorm:"not null;uniqueIndex:idx_habitacion_fecha" json:"fecha_reserva"`
+	FechaEntrada time.Time  `json:"fecha_entrada"`
+	FechaSalida  time.Time  `json:"fecha_salida"`
 	Estado       string     `gorm:"type:enum('confirmada','pendiente','cancelada')" json:"estado"`
 	IDUsuario    int        `json:"id_usuario"`
-	IDHabitacion int        `json:"id_habitacion"`
+	IDHabitacion int        `gorm:"not null;uniqueIndex:idx_habitacion_fecha" json:"id_habitacion"`
 	Usuario      Usuario    `gorm:"foreignKey:IDUsuario" json:"usuario"`
 	Habitacion   Habitacion `gorm:"foreignKey:IDHabitacion" json:"habitacion"`
 }
@@ -79,13 +81,11 @@ func (Pago) TableName() string {
 
 // Entidad Llave
 type Llave struct {
-	ID           int        `gorm:"primaryKey;autoIncrement" json:"id_llave"`
-	IDReserva    int        `json:"id_reserva"`
-	IDHabitacion int        `json:"id_habitacion"`
-	TipoLlave    string     `gorm:"type:enum('fisica','electronica')" json:"tipo_llave"`
-	EstadoLlave  string     `gorm:"type:enum('activa','desactivada')" json:"estado_llave"`
-	Reserva      Reserva    `gorm:"foreignKey:IDReserva" json:"reserva"`
-	Habitacion   Habitacion `gorm:"foreignKey:IDHabitacion" json:"habitacion"`
+	ID          int     `gorm:"primaryKey;autoIncrement" json:"id_llave"`
+	IDReserva   int     `json:"id_reserva"`
+	TipoLlave   string  `gorm:"type:enum('fisica','electronica')" json:"tipo_llave"`
+	EstadoLlave string  `gorm:"type:enum('activa','desactivada')" json:"estado_llave"`
+	Reserva     Reserva `gorm:"foreignKey:IDReserva" json:"reserva"`
 }
 
 type Llaves []Llave
