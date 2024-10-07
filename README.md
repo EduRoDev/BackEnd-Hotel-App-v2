@@ -17,7 +17,7 @@ Este proyecto es una aplicación de gestión de hotel desarrollada en Go. Propor
 
 - Go (Golang)
 - GORM (ORM para Go)
-- Base de datos (especificar cuál: MySQL, PostgreSQL, etc.)
+- Base de datos (MySQL)
 - Gorilla Mux (para enrutamiento HTTP)
 
 ## Estructura del Proyecto
