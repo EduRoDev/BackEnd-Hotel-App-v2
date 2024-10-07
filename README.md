@@ -56,4 +56,4 @@ El proyecto sigue una arquitectura de capas:
 Eduardo Rodriguez - Solanoe934@gmail.com
 
 
-Enlace del proyecto: [https://github.com/EduRoDev](https://github.com/EduRoDev)
+Enlace de mi perfil: [https://github.com/EduRoDev](https://github.com/EduRoDev)
