@@ -32,7 +32,7 @@ type Habitacion struct {
 	Numero string  `gorm:"size:10" json:"numero"`
 	Tipo   string  `gorm:"type:enum('sencilla','doble','suite')" json:"tipo"`
 	Precio float64 `gorm:"type:decimal(10,2)" json:"precio"`
-	Estado string  `gorm:"size:20" json:"estado"`
+	Estado string  `gorm:"type:enum('disponible','reservada','ocupada')" json:"estado"`
 }
 
 type Habitaciones []Habitacion

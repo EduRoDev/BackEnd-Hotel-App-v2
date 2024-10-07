@@ -18,7 +18,7 @@ Este proyecto es una aplicación de gestión de hotel desarrollada en Go. Propor
 
 - Go (Golang)
 - GORM (ORM para Go)
-- Base de datos (especificar cuál: MySQL, PostgreSQL, etc.)
+- Base de datos (MySQL)
 - Gorilla Mux (para enrutamiento HTTP)
 
 ## Estructura del Proyecto
@@ -52,13 +52,9 @@ El proyecto sigue una arquitectura de capas:
    go run main.go
    ```
 
-## Contribución
-
-Las contribuciones son bienvenidas. Por favor, abre un issue para discutir los cambios propuestos antes de hacer un pull request.
-
 ## Contacto
 
 Eduardo Rodriguez - Solanoe934@gmail.com
 
 
-Enlace del proyecto: [https://github.com/EduRoDev/BackEnd-Hotel-App-v2](https://github.com/EduRoDev/BackEnd-Hotel-App-v2)
+Enlace de mi perfil: [https://github.com/EduRoDev](https://github.com/EduRoDev)
