@@ -25,6 +25,14 @@ func (u User) GetID(User entities.Usuario) entities.Usuario {
 	return User
 }
 
+func (u User) LastID(User entities.Usuario) entities.Usuario{
+	result := database.Database.Last(&User)
+	if result.Error != nil {
+		return entities.Usuario{}
+	}
+	return User
+}
+
 func (u User) Create(User entities.Usuario) map[string]interface{} {
 	result := database.Database.Create(&User)
 	if result.Error != nil {

@@ -10,6 +10,7 @@ import (
 
 	controllers "github.com/EduRoDev/BackEnd-Hotel-App-v2/Pkg/Controllers"
 	database "github.com/EduRoDev/BackEnd-Hotel-App-v2/Pkg/Database"
+	Middlewares_cors "github.com/EduRoDev/BackEnd-Hotel-App-v2/Pkg/Middlewares"
 	"github.com/gorilla/mux"
 )
 
@@ -25,6 +26,7 @@ func main() {
 	controllerRoom := controllers.NewRoomController(logger)
 	controllerReservation := controllers.NewReservationController(logger)
 	controllerPayment := controllers.NewPaymentController(logger)
+	controllerKey := controllers.NewKeyController(logger)
 
 	// Crear un nuevo router con Gorilla Mux
 	router := mux.NewRouter()
@@ -32,6 +34,7 @@ func main() {
 	// Rutas de usuario
 	router.HandleFunc("/user", controllerUser.Get).Methods("GET")
 	router.HandleFunc("/user/{id}", controllerUser.GetID).Methods("GET")
+	router.HandleFunc("/users/last", controllerUser.GetLastUser).Methods("GET")
 	router.HandleFunc("/user", controllerUser.Post).Methods("POST")
 	router.HandleFunc("/user/{id}", controllerUser.Modify).Methods("PUT")
 	router.HandleFunc("/user/{id}", controllerUser.Delete).Methods("DELETE")
@@ -49,6 +52,7 @@ func main() {
 	router.HandleFunc("/reserva/{id}", controllerReservation.GetID).Methods("GET")
 	router.HandleFunc("/reserva", controllerReservation.Create).Methods("POST")
 	router.HandleFunc("/reserva/{id}", controllerReservation.Mod).Methods("PUT")
+	router.HandleFunc("/cancelarReserva/{id}", controllerReservation.Cancel).Methods("DELETE")
 	router.HandleFunc("/reserva/{id}", controllerReservation.Del).Methods("DELETE")
 
 	// Rutas de pago
@@ -58,10 +62,20 @@ func main() {
 	router.HandleFunc("/pago/{id}", controllerPayment.Mod).Methods("PUT")
 	router.HandleFunc("/pago/{id}", controllerPayment.Del).Methods("DELETE")
 
+	// Rutas de llave
+	router.HandleFunc("/llave", controllerKey.Get).Methods("GET")
+	router.HandleFunc("/llave/{id}", controllerKey.GetID).Methods("GET")
+	router.HandleFunc("/llave", controllerKey.Create).Methods("POST")
+	router.HandleFunc("/llave/{id}", controllerKey.Modify).Methods("PUT")
+	router.HandleFunc("/llave/{id}", controllerKey.Delete).Methods("DELETE")
+
+	// Rutas de middlewares
+	cors := Middlewares_cors.CorsMiddleware(router)
+
 	// Iniciar el servidor
 	srv := &http.Server{
 		Addr:         ":8080",
-		Handler:      router,
+		Handler:      cors,
 		IdleTimeout:  120 * time.Second,
 		ReadTimeout:  1 * time.Second,
 		WriteTimeout: 1 * time.Second,
