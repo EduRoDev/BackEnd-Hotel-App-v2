@@ -56,4 +56,4 @@ El proyecto sigue una arquitectura de capas:
 Eduardo Rodriguez - Solanoe934@gmail.com
 
 
-Enlace del proyecto: [https://github.com/EduRoDev/BackEnd-Hotel-App-v2](https://github.com/EduRoDev/BackEnd-Hotel-App-v2)
+Enlace del proyecto: [https://github.com/EduRoDev](https://github.com/EduRoDev)
