@@ -11,7 +11,6 @@ Este proyecto es una aplicación de gestión de hotel desarrollada en Go. Propor
 - Gestión de usuarios
 - Manejo de reservas
 - Administración de habitaciones
-- Autenticación y autorización
 - Operaciones CRUD para varias entidades
 
 ## Tecnologías Utilizadas
@@ -51,10 +50,6 @@ El proyecto sigue una arquitectura de capas:
    ```
    go run main.go
    ```
-
-## Contribución
-
-Las contribuciones son bienvenidas. Por favor, abre un issue para discutir los cambios propuestos antes de hacer un pull request.
 
 ## Contacto
 
