@@ -10,7 +10,7 @@ type Invoice struct{}
 
 func (i Invoice) Get() []entities.FacturaElectronica {
 	var invoice []entities.FacturaElectronica
-	result := database.Database.Preload("Pago").Find(&invoice)
+	result := database.Database.Preload("Pago").Preload("Pago.Reserva").Find(&invoice)
 	if result.Error != nil {
 		return nil
 	}
@@ -18,7 +18,7 @@ func (i Invoice) Get() []entities.FacturaElectronica {
 }
 
 func (i Invoice) GetID(invoice entities.FacturaElectronica) entities.FacturaElectronica {
-	result := database.Database.Preload("Pago").First(&invoice, invoice.ID)
+	result := database.Database.Preload("Pago").Preload("Pago.Reserva").First(&invoice, invoice.ID)
 	if result.Error != nil {
 		return entities.FacturaElectronica{}
 	}
