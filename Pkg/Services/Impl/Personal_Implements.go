@@ -10,7 +10,7 @@ type Personal struct{}
 
 func (p Personal) Get() []entities.Personal {
 	var personal []entities.Personal
-	result := database.Database.Preload("Habitacion").Preload("Habitacion.Habitacion").Find(&personal)
+	result := database.Database.Find(&personal)
 	if result.Error != nil {
 		return nil
 	}
@@ -18,7 +18,7 @@ func (p Personal) Get() []entities.Personal {
 }
 
 func (p Personal) GetID(personal entities.Personal) entities.Personal {
-	result := database.Database.Preload("Habitacion").Preload("Habitacion.Habitacion").First(&personal, personal.ID)
+	result := database.Database.First(&personal, personal.ID)
 	if result.Error != nil {
 		return entities.Personal{}
 	}

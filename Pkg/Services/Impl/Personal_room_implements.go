@@ -10,7 +10,7 @@ type PersonalRoom struct{}
 
 func (p PersonalRoom) Get() []entities.PersonalHabitacion {
 	var personalRoom []entities.PersonalHabitacion
-	result := database.Database.Preload("Habitacion").Preload("Habitacion.Habitacion").Find(&personalRoom)
+	result := database.Database.Preload("Habitacion").Preload("Personal").Find(&personalRoom)
 	if result.Error != nil {
 		return nil
 	}
@@ -18,7 +18,7 @@ func (p PersonalRoom) Get() []entities.PersonalHabitacion {
 }
 
 func (p PersonalRoom) GetID(personalRoom entities.PersonalHabitacion) entities.PersonalHabitacion {
-	result := database.Database.Preload("Habitacion").Preload("Habitacion.Habitacion").First(&personalRoom, personalRoom.ID)
+	result := database.Database.Preload("Habitacion").Preload("Personal").First(&personalRoom, personalRoom.ID)
 	if result.Error != nil {
 		return entities.PersonalHabitacion{}
 	}
