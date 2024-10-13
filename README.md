@@ -35,7 +35,7 @@ El proyecto sigue una arquitectura de capas:
 
 #1. Clona el repositorio:
    ```
-   git clone https://github.com/tu-usuario/BackEnd-Hotel-App-v2.git
+   git clone https://github.com/EduRoDev/BackEnd-Hotel-App-v2.git
    ```
 #2. Navega al directorio del proyecto:
    ```
