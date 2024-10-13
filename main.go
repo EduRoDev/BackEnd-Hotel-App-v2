@@ -32,6 +32,7 @@ func main() {
 	router := mux.NewRouter()
 
 	// Rutas de usuario
+	router.HandleFunc("/login", controllerUser.Login).Methods("POST")
 	router.HandleFunc("/user", controllerUser.Get).Methods("GET")
 	router.HandleFunc("/user/{id}", controllerUser.GetID).Methods("GET")
 	router.HandleFunc("/users/last", controllerUser.GetLastUser).Methods("GET")
