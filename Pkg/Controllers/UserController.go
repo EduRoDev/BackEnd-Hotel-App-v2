@@ -5,12 +5,15 @@ import (
 	"log"
 	"net/http"
 	"strconv"
+	"time"
 
 	helpers "github.com/EduRoDev/BackEnd-Hotel-App-v2/Pkg/Helpers"
 	dto "github.com/EduRoDev/BackEnd-Hotel-App-v2/Pkg/Models/Dto"
 	entities "github.com/EduRoDev/BackEnd-Hotel-App-v2/Pkg/Models/Entities"
 	impl "github.com/EduRoDev/BackEnd-Hotel-App-v2/Pkg/Services/Impl"
 	interfaces "github.com/EduRoDev/BackEnd-Hotel-App-v2/Pkg/Services/Interfaces"
+	"github.com/didip/tollbooth"
+	"github.com/didip/tollbooth/limiter"
 	"github.com/gorilla/mux"
 )
 
@@ -21,6 +24,35 @@ type UserController struct {
 
 func NewUserController(l *log.Logger) *UserController {
 	return &UserController{l, &impl.User{}}
+}
+
+var limite = tollbooth.NewLimiter(1, &limiter.ExpirableOptions{DefaultExpirationTTL: time.Hour})
+
+func (u UserController) Login(w http.ResponseWriter, r *http.Request) {
+	httpError := tollbooth.LimitByRequest(limite, w, r)
+	if httpError != nil {
+		w.WriteHeader(httpError.StatusCode)
+		w.Write([]byte(httpError.Message))
+		return
+	}
+	w.Header().Set("Content-Type", "application/json")
+	var loginRequest entities.LoginRequest
+	if err := json.NewDecoder(r.Body).Decode(&loginRequest); err != nil {
+		rp := helpers.Error(err, "Error al obtener usuario")
+		w.WriteHeader(http.StatusBadRequest)
+		json.NewEncoder(w).Encode(rp)
+		return
+	}
+
+	user, err := u.Us.Login(loginRequest.Nombre, loginRequest.NumeroDocumento)
+	if err != nil {
+		rp := helpers.ErrorWithStatus("Error", "Error al conectar con el servidor", "500")
+		w.WriteHeader(http.StatusInternalServerError)
+		json.NewEncoder(w).Encode(rp)
+		return
+	}
+	w.WriteHeader(http.StatusAccepted)
+	json.NewEncoder(w).Encode(user)
 }
 
 func (u UserController) Get(w http.ResponseWriter, r *http.Request) {
@@ -74,7 +106,7 @@ func (u UserController) Post(w http.ResponseWriter, r *http.Request) {
 
 	if err := json.NewDecoder(r.Body).Decode(&user); err != nil {
 		rp := helpers.Error(err, "Error al obtener usuario")
-		w.WriteHeader(http.StatusBadRequest) // Cambiado a 400 Bad Request
+		w.WriteHeader(http.StatusBadRequest)
 		json.NewEncoder(w).Encode(rp)
 		return
 	}
@@ -99,7 +131,7 @@ func (u UserController) Post(w http.ResponseWriter, r *http.Request) {
 	var err error
 	if findUser["error"] != nil {
 		rp := helpers.Error(err, "Error al crear usuario")
-		w.WriteHeader(http.StatusInternalServerError) 
+		w.WriteHeader(http.StatusInternalServerError)
 		json.NewEncoder(w).Encode(rp)
 		return
 	}

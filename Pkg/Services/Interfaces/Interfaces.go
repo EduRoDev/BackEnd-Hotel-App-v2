@@ -3,6 +3,7 @@ package interfaces
 import entities "github.com/EduRoDev/BackEnd-Hotel-App-v2/Pkg/Models/Entities"
 
 type User interface {
+	Login(nombre string, numero_documento string) (string, error)
 	Get() []entities.Usuario
 	GetID(User entities.Usuario) entities.Usuario
 	LastID(User entities.Usuario) entities.Usuario

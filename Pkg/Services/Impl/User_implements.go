@@ -1,12 +1,30 @@
 package impl
 
 import (
+	"errors"
+
+	auth "github.com/EduRoDev/BackEnd-Hotel-App-v2/Pkg/Auth"
 	database "github.com/EduRoDev/BackEnd-Hotel-App-v2/Pkg/Database"
 	helpers "github.com/EduRoDev/BackEnd-Hotel-App-v2/Pkg/Helpers"
 	entities "github.com/EduRoDev/BackEnd-Hotel-App-v2/Pkg/Models/Entities"
 )
 
 type User struct{}
+
+func (u User) Login(nombre string, numeroDocumento string) (string, error) {
+	var usuario entities.Usuario
+
+	result := database.Database.Where("nombre = ? AND numero_documento = ?", nombre, numeroDocumento).First(&usuario)
+	if result.Error != nil {
+		return "", errors.New("usuario no encontrado")
+	}
+
+	token, err := auth.GenerateToken(usuario.ID)
+	if err != nil {
+		return "", errors.New("error al generar el token")
+	}
+	return token, nil
+}
 
 func (u User) Get() []entities.Usuario {
 	var user []entities.Usuario
@@ -25,7 +43,7 @@ func (u User) GetID(User entities.Usuario) entities.Usuario {
 	return User
 }
 
-func (u User) LastID(User entities.Usuario) entities.Usuario{
+func (u User) LastID(User entities.Usuario) entities.Usuario {
 	result := database.Database.Last(&User)
 	if result.Error != nil {
 		return entities.Usuario{}
