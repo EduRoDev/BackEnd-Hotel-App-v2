@@ -29,7 +29,7 @@ func (r Reserva) Create(Reserva entities.Reserva) map[string]interface{} {
 	tx := database.Database.Begin()
 
 	var Habitacion entities.Habitacion
-	if tx.First(&Habitacion, Reserva.IDHabitacion).Error != nil {
+	if tx.Set("gorm:query_option", "FOR UPDATE").First(&Habitacion, Reserva.IDHabitacion).Error != nil {
 		tx.Rollback()
 		return helpers.Error(tx.Error, "Error al obtener habitacion")
 	}

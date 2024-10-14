@@ -19,7 +19,7 @@ func (u User) Login(nombre string, numeroDocumento string) (string, error) {
 		return "", errors.New("usuario no encontrado")
 	}
 
-	token, err := auth.GenerateToken(usuario.ID)
+	token, err := auth.GenerateToken(usuario.ID, usuario.Nombre)
 	if err != nil {
 		return "", errors.New("error al generar el token")
 	}
