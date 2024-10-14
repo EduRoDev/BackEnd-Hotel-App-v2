@@ -8,9 +8,9 @@ import (
 	"os/signal"
 	"time"
 
-	controllers "github.com/EduRoDev/BackEnd-Hotel-App-v2/Pkg/Controllers"
 	database "github.com/EduRoDev/BackEnd-Hotel-App-v2/Pkg/Database"
 	Middlewares_cors "github.com/EduRoDev/BackEnd-Hotel-App-v2/Pkg/Middlewares"
+	routes "github.com/EduRoDev/BackEnd-Hotel-App-v2/Pkg/Routes"
 	"github.com/gorilla/mux"
 )
 
@@ -21,54 +21,19 @@ func main() {
 	// Crear un nuevo logger
 	logger := log.New(os.Stdout, "HOTEL-API: ", log.LstdFlags)
 
-	// Crear un nuevo controlador
-	controllerUser := controllers.NewUserController(logger)
-	controllerRoom := controllers.NewRoomController(logger)
-	controllerReservation := controllers.NewReservationController(logger)
-	controllerPayment := controllers.NewPaymentController(logger)
-	controllerKey := controllers.NewKeyController(logger)
-
 	// Crear un nuevo router con Gorilla Mux
 	router := mux.NewRouter()
 
-	// Rutas de usuario
-	router.HandleFunc("/login", controllerUser.Login).Methods("POST")
-	router.HandleFunc("/user", controllerUser.Get).Methods("GET")
-	router.HandleFunc("/user/{id}", controllerUser.GetID).Methods("GET")
-	router.HandleFunc("/users/last", controllerUser.GetLastUser).Methods("GET")
-	router.HandleFunc("/user", controllerUser.Post).Methods("POST")
-	router.HandleFunc("/user/{id}", controllerUser.Modify).Methods("PUT")
-	router.HandleFunc("/user/{id}", controllerUser.Delete).Methods("DELETE")
-
-	// Rutas de habitacion
-	router.HandleFunc("/habitacion", controllerRoom.Get).Methods("GET")
-	router.HandleFunc("/habitacion/{id}", controllerRoom.GetID).Methods("GET")
-	router.HandleFunc("/disponible", controllerRoom.GetAvailable).Methods("GET")
-	router.HandleFunc("/habitacion", controllerRoom.Post).Methods("POST")
-	router.HandleFunc("/habitacion/{id}", controllerRoom.Modify).Methods("PUT")
-	router.HandleFunc("/habitacion/{id}", controllerRoom.Delete).Methods("DELETE")
-
-	// Rutas de reserva
-	router.HandleFunc("/reserva", controllerReservation.Get).Methods("GET")
-	router.HandleFunc("/reserva/{id}", controllerReservation.GetID).Methods("GET")
-	router.HandleFunc("/reserva", controllerReservation.Create).Methods("POST")
-	router.HandleFunc("/reserva/{id}", controllerReservation.Mod).Methods("PUT")
-	router.HandleFunc("/cancelarReserva/{id}", controllerReservation.Cancel).Methods("DELETE")
-	router.HandleFunc("/reserva/{id}", controllerReservation.Del).Methods("DELETE")
-
-	// Rutas de pago
-	router.HandleFunc("/pago", controllerPayment.Get).Methods("GET")
-	router.HandleFunc("/pago/{id}", controllerPayment.GetID).Methods("GET")
-	router.HandleFunc("/pago", controllerPayment.Create).Methods("POST")
-	router.HandleFunc("/pago/{id}", controllerPayment.Mod).Methods("PUT")
-	router.HandleFunc("/pago/{id}", controllerPayment.Del).Methods("DELETE")
-
-	// Rutas de llave
-	router.HandleFunc("/llave", controllerKey.Get).Methods("GET")
-	router.HandleFunc("/llave/{id}", controllerKey.GetID).Methods("GET")
-	router.HandleFunc("/llave", controllerKey.Create).Methods("POST")
-	router.HandleFunc("/llave/{id}", controllerKey.Modify).Methods("PUT")
-	router.HandleFunc("/llave/{id}", controllerKey.Delete).Methods("DELETE")
+	// Rutas
+	routes.UserRoutes(router, logger)
+	routes.RoomRoutes(router, logger)
+	routes.ReservationRoutes(router, logger)
+	routes.PaymentRoutes(router, logger)
+	routes.KeyRoutes(router, logger)
+	routes.CheckInRoutes(router, logger)
+	routes.PersonalRoutes(router, logger)
+	routes.PersonalRoomRoutes(router, logger)
+	routes.InvoiceRoutes(router, logger)
 
 	// Rutas de middlewares
 	cors := Middlewares_cors.CorsMiddleware(router)
