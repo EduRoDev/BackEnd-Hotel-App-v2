@@ -86,18 +86,13 @@ func (u UserController) GetID(w http.ResponseWriter, r *http.Request) {
 	json.NewEncoder(w).Encode(findUser)
 }
 
-func (u UserController) GetLastUser(w http.ResponseWriter, r *http.Request) {
+func (u UserController) GetUser(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
-	lastUser := u.Us.LastID(entities.Usuario{})
-
-	if lastUser.ID == 0 {
-		rp := helpers.Error(nil, "No se encontraron usuarios")
-		w.WriteHeader(http.StatusNotFound)
-		json.NewEncoder(w).Encode(rp)
-		return
-	}
+	vars := mux.Vars(r)
+	nombre := vars["nombre"]
+	User := u.Us.GetUser(nombre)
 	w.WriteHeader(http.StatusOK)
-	json.NewEncoder(w).Encode(lastUser)
+	json.NewEncoder(w).Encode(User)
 }
 
 func (u UserController) Post(w http.ResponseWriter, r *http.Request) {

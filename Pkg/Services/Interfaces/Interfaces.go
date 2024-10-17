@@ -6,7 +6,7 @@ type User interface {
 	Login(nombre string, numero_documento string) (string, error)
 	Get() []entities.Usuario
 	GetID(User entities.Usuario) entities.Usuario
-	LastID(User entities.Usuario) entities.Usuario
+	GetUser(nombre string) entities.Usuario
 	Create(User entities.Usuario) map[string]interface{}
 	Mod(User entities.Usuario) map[string]interface{}
 	Del(User entities.Usuario) map[string]interface{}
