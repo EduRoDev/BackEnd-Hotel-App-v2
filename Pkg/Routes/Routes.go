@@ -24,7 +24,7 @@ func UserRoutes(router *mux.Router, logger *log.Logger) {
 	router.HandleFunc("/login", wrapHandler(userController.Login)).Methods("POST")
 	router.HandleFunc("/user", wrapHandler(userController.Get)).Methods("GET")
 	router.HandleFunc("/user/{id}", wrapHandler(userController.GetID)).Methods("GET")
-	router.HandleFunc("/users/last", wrapHandler(userController.GetLastUser)).Methods("GET")
+	router.HandleFunc("/users/{nombre}", wrapHandler(userController.GetUser)).Methods("GET")
 	router.HandleFunc("/user", wrapHandler(userController.Post)).Methods("POST")
 	router.HandleFunc("/user/{id}", wrapHandler(userController.Modify)).Methods("PUT")
 	router.HandleFunc("/user/{id}", wrapHandler(userController.Delete)).Methods("DELETE")

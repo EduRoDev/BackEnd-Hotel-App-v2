@@ -43,8 +43,9 @@ func (u User) GetID(User entities.Usuario) entities.Usuario {
 	return User
 }
 
-func (u User) LastID(User entities.Usuario) entities.Usuario {
-	result := database.Database.Last(&User)
+func (u User) GetUser(nombre string) entities.Usuario {
+	var User entities.Usuario
+	result := database.Database.Where("nombre = ?", nombre).First(&User)
 	if result.Error != nil {
 		return entities.Usuario{}
 	}
