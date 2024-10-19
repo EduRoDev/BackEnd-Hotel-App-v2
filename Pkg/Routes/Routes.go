@@ -44,6 +44,7 @@ func ReservationRoutes(router *mux.Router, logger *log.Logger) {
 	reservationController := controllers.NewReservationController(logger)
 	router.HandleFunc("/reserva", wrapHandler(reservationController.Get)).Methods("GET")
 	router.HandleFunc("/reserva/{id}", wrapHandler(reservationController.GetID)).Methods("GET")
+	router.HandleFunc("/reserva/{idUsuario}/{fechaEntrada}", wrapHandler(reservationController.GetByUsuarioYFecha)).Methods("GET")
 	router.HandleFunc("/reserva", wrapHandler(reservationController.Create)).Methods("POST")
 	router.HandleFunc("/reserva/{id}", wrapHandler(reservationController.Mod)).Methods("PUT")
 	router.HandleFunc("/cancelarReserva/{id}", wrapHandler(reservationController.Cancel)).Methods("DELETE")

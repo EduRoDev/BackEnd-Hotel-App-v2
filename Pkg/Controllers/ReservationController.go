@@ -5,6 +5,7 @@ import (
 	"log"
 	"net/http"
 	"strconv"
+	"time"
 
 	helpers "github.com/EduRoDev/BackEnd-Hotel-App-v2/Pkg/Helpers"
 	dto "github.com/EduRoDev/BackEnd-Hotel-App-v2/Pkg/Models/Dto"
@@ -50,6 +51,28 @@ func (rs ReservationController) GetID(w http.ResponseWriter, r *http.Request) {
 	}
 	w.WriteHeader(http.StatusAccepted)
 	json.NewEncoder(w).Encode(findReserva)
+}
+
+func (rs ReservationController) GetByUsuarioYFecha(w http.ResponseWriter, r *http.Request) {
+	w.Header().Set("Content-Type", "application/json")
+	vr := mux.Vars(r)
+	idUsuario, err := strconv.Atoi(vr["idUsuario"])
+	if err != nil {
+		rp := helpers.Error(err, "Error al obtener reserva")
+		w.WriteHeader(http.StatusBadRequest)
+		json.NewEncoder(w).Encode(rp)
+		return
+	}
+	fechaEntrada, err := time.Parse(time.RFC3339, vr["fechaEntrada"])
+	if err != nil {
+		rp := helpers.Error(err, "Error al obtener reserva")
+		w.WriteHeader(http.StatusBadRequest)
+		json.NewEncoder(w).Encode(rp)
+		return
+	}
+	reserva := rs.Rs.GetByUsuarioYFecha(idUsuario, fechaEntrada)
+	w.WriteHeader(http.StatusAccepted)
+	json.NewEncoder(w).Encode(reserva)
 }
 
 func (rs ReservationController) Create(w http.ResponseWriter, r *http.Request) {

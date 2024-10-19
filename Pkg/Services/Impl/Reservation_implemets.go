@@ -1,6 +1,8 @@
 package impl
 
 import (
+	"time"
+
 	database "github.com/EduRoDev/BackEnd-Hotel-App-v2/Pkg/Database"
 	helpers "github.com/EduRoDev/BackEnd-Hotel-App-v2/Pkg/Helpers"
 	entities "github.com/EduRoDev/BackEnd-Hotel-App-v2/Pkg/Models/Entities"
@@ -21,6 +23,15 @@ func (r Reserva) GetID(reserva entities.Reserva) entities.Reserva {
 	result := database.Database.Preload("Usuario").Preload("Habitacion").First(&reserva, reserva.ID)
 	if result.Error != nil {
 		return entities.Reserva{}
+	}
+	return reserva
+}
+
+func (r Reserva) GetByUsuarioYFecha(idUsuario int, fechaEntrada time.Time) []entities.Reserva {
+	var reserva []entities.Reserva
+	result := database.Database.Preload("Usuario").Preload("Habitacion").Where("id_usuario = ? and fecha_entrada = ?", idUsuario, fechaEntrada).Find(&reserva)
+	if result.Error != nil {
+		return nil
 	}
 	return reserva
 }

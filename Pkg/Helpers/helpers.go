@@ -11,3 +11,5 @@ func ErrorWithStatus(err string, message string, status string) map[string]inter
 func Success(message string) map[string]interface{} {
 	return map[string]interface{}{"success": true, "message": message}
 }
+
+
