@@ -1,6 +1,10 @@
 package interfaces
 
-import entities "github.com/EduRoDev/BackEnd-Hotel-App-v2/Pkg/Models/Entities"
+import (
+	"time"
+
+	entities "github.com/EduRoDev/BackEnd-Hotel-App-v2/Pkg/Models/Entities"
+)
 
 type User interface {
 	Login(nombre string, numero_documento string) (string, error)
@@ -24,6 +28,7 @@ type Habitacion interface {
 type Reservation interface {
 	Get() []entities.Reserva
 	GetID(Reserva entities.Reserva) entities.Reserva
+	GetByUsuarioYFecha(idUsuario int, fechaEntrada time.Time) []entities.Reserva
 	Create(Reserva entities.Reserva) map[string]interface{}
 	Mod(Reserva entities.Reserva) map[string]interface{}
 	Del(Reserva entities.Reserva) map[string]interface{}

@@ -45,12 +45,12 @@ func (Habitacion) TableName() string {
 // Entidad Reserva
 type Reserva struct {
 	ID           int        `gorm:"primaryKey;autoIncrement" json:"id_reserva"`
-	FechaReserva time.Time  `gorm:"not null;uniqueIndex:idx_habitacion_fecha" json:"fecha_reserva"`
+	FechaReserva time.Time  `json:"fecha_reserva"`
 	FechaEntrada time.Time  `json:"fecha_entrada"`
 	FechaSalida  time.Time  `json:"fecha_salida"`
 	Estado       string     `gorm:"type:enum('confirmada','reservada','pendiente','cancelada')" json:"estado"`
 	IDUsuario    int        `json:"id_usuario"`
-	IDHabitacion int        `gorm:"not null;uniqueIndex:idx_habitacion_fecha" json:"id_habitacion"`
+	IDHabitacion int        `json:"id_habitacion"`
 	Usuario      Usuario    `gorm:"foreignKey:IDUsuario" json:"usuario"`
 	Habitacion   Habitacion `gorm:"foreignKey:IDHabitacion" json:"habitacion"`
 }
