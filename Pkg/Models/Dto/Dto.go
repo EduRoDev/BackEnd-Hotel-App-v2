@@ -4,19 +4,29 @@ import "time"
 
 // DTO para Usuario
 type UsuarioDTO struct {
-	ID              int    `json:"id_usuario"`
-	TipoDocumento   string `json:"tipo_documento"`
-	NumeroDocumento string `json:"numero_documento"`
+	ID                 int              `json:"id_usuario"`
+	TipoDocumento      string           `json:"tipo_documento"`
+	NumeroDocumento    string           `json:"numero_documento"`
+	Nombre             string           `json:"nombre"`
+	Apellido           string           `json:"apellido"`
+	Email              string           `json:"email"`
+	Telefono           string           `json:"telefono"`
+	Nacionalidad       string           `json:"nacionalidad"`
+	Ciudad             string           `json:"ciudad"`
+	Pais               string           `json:"pais"`
+	Ocupacion          string           `json:"ocupacion"`
+	PaisProcedencia    string           `json:"pais_procedencia"`
+	Direccion          string           `json:"direccion"`
+	NumeroAcompañantes int              `json:"numero_acompañantes"`
+	Acompañantes       []AcompañanteDTO `json:"acompañantes"`
+}
+
+type AcompañanteDTO struct {
+	ID              int    `json:"id_acompañante"`
 	Nombre          string `json:"nombre"`
 	Apellido        string `json:"apellido"`
-	Email           string `json:"email"`
-	Telefono        string `json:"telefono"`
-	Nacionalidad    string `json:"nacionalidad"`
-	Ciudad          string `json:"ciudad"`
-	Pais            string `json:"pais"`
-	Ocupacion       string `json:"ocupacion"`
-	PaisProcedencia string `json:"pais_procedencia"`
-	Direccion       string `json:"direccion"`
+	TipoDocumento   string `json:"tipo_documento"`
+	NumeroDocumento string `json:"numero_documento"`
 }
 
 // DTO para Habitacion
@@ -50,10 +60,10 @@ type PagoDTO struct {
 
 // DTO para Llave
 type LlaveDTO struct {
-	ID           int    `json:"id_llave"`
-	IDReserva    int    `json:"id_reserva"`
-	TipoLlave    string `json:"tipo_llave"`
-	EstadoLlave  string `json:"estado_llave"`
+	ID          int    `json:"id_llave"`
+	IDReserva   int    `json:"id_reserva"`
+	TipoLlave   string `json:"tipo_llave"`
+	EstadoLlave string `json:"estado_llave"`
 }
 
 // DTO para CheckInCheckOut

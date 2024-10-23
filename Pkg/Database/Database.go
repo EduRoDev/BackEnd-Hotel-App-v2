@@ -62,6 +62,7 @@ func Init() {
 func createSchema(db *gorm.DB) {
 	// Migrar las tablas de la base de datos
 	err := db.AutoMigrate(&entities.Usuario{},
+		&entities.Acompañante{},
 		&entities.Habitacion{},
 		&entities.Reserva{},
 		&entities.Pago{},

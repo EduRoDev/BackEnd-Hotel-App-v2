@@ -16,6 +16,14 @@ type User interface {
 	Del(User entities.Usuario) map[string]interface{}
 }
 
+type Acompañante interface {
+	Get() []entities.Acompañante
+	GetID(Acompañante entities.Acompañante) entities.Acompañante
+	Create(Acompañante entities.Acompañante) map[string]interface{}
+	Mod(Acompañante entities.Acompañante) map[string]interface{}
+	Del(Acompañante entities.Acompañante) map[string]interface{}
+}
+
 type Habitacion interface {
 	Get() []entities.Habitacion
 	GetID(Habitacion entities.Habitacion) entities.Habitacion

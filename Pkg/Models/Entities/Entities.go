@@ -4,19 +4,21 @@ import "time"
 
 // Entidad Usuario
 type Usuario struct {
-	ID              int    `gorm:"primaryKey;autoIncrement" json:"id_usuario"`
-	TipoDocumento   string `gorm:"type:enum('CC','TI','TE','PP','PPT','NIT')" json:"tipo_documento"`
-	NumeroDocumento string `gorm:"size:50;unique" json:"numero_documento"`
-	Nombre          string `gorm:"size:100" json:"nombre"`
-	Apellido        string `gorm:"size:100" json:"apellido"`
-	Email           string `gorm:"size:100;unique" json:"email"`
-	Telefono        string `gorm:"size:20" json:"telefono"`
-	Nacionalidad    string `gorm:"size:100" json:"nacionalidad"`
-	Ciudad          string `gorm:"size:100" json:"ciudad"`
-	Pais            string `gorm:"size:100" json:"pais"`
-	Ocupacion       string `gorm:"size:100" json:"ocupacion"`
-	PaisProcedencia string `gorm:"size:100" json:"pais_procedencia"`
-	Direccion       string `gorm:"size:255" json:"direccion"`
+	ID                 int          `gorm:"primaryKey;autoIncrement" json:"id_usuario"`
+	TipoDocumento      string       `gorm:"type:enum('CC','TI','TE','PP','PPT','NIT')" json:"tipo_documento"`
+	NumeroDocumento    string       `gorm:"size:50;unique" json:"numero_documento"`
+	Nombre             string       `gorm:"size:100" json:"nombre"`
+	Apellido           string       `gorm:"size:100" json:"apellido"`
+	Email              string       `gorm:"size:100;unique" json:"email"`
+	Telefono           string       `gorm:"size:20" json:"telefono"`
+	Nacionalidad       string       `gorm:"size:100" json:"nacionalidad"`
+	Ciudad             string       `gorm:"size:100" json:"ciudad"`
+	Pais               string       `gorm:"size:100" json:"pais"`
+	Ocupacion          string       `gorm:"size:100" json:"ocupacion"`
+	PaisProcedencia    string       `gorm:"size:100" json:"pais_procedencia"`
+	Direccion          string       `gorm:"size:255" json:"direccion"`
+	NumeroAcompañantes int          `gorm:"type:int" json:"numero_acompañantes"`
+	Acompañante        Acompañantes `gorm:"foreignKey:IDusuario" json:"acompañantes"`
 }
 
 type Usuarios []Usuario
@@ -24,6 +26,22 @@ type Usuarios []Usuario
 // Definir TableName para Usuario
 func (Usuario) TableName() string {
 	return "usuario"
+}
+
+type Acompañante struct {
+	ID              int    `gorm:"primaryKey;autoIncrement" json:"id_acompañante"`
+	IDusuario       int    `gorm:"index" json:"usuario"`
+	Nombre          string `gorm:"size:100" json:"nombre"`
+	Apellido        string `gorm:"size:100" json:"apellido"`
+	TipoDocumento   string `gorm:"type:enum('CC','TI','TE','PP','PPT','NIT')" json:"tipo_documento"`
+	NumeroDocumento string `gorm:"size:50;unique" json:"numero_documento"`
+}
+
+type Acompañantes []Acompañante
+
+// Definir TableName para Acompañante
+func (Acompañante) TableName() string {
+	return "acompañante"
 }
 
 // Entidad Habitacion
