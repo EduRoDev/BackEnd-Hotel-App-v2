@@ -28,7 +28,7 @@ func (u User) Login(nombre string, numeroDocumento string) (string, error) {
 
 func (u User) Get() []entities.Usuario {
 	var user []entities.Usuario
-	result := database.Database.Find(&user)
+	result := database.Database.Preload("Acompañante").Find(&user)
 	if result.Error != nil {
 		return nil
 	}
@@ -36,7 +36,7 @@ func (u User) Get() []entities.Usuario {
 }
 
 func (u User) GetID(User entities.Usuario) entities.Usuario {
-	result := database.Database.First(&User, User.ID)
+	result := database.Database.Preload("Acompañante").First(&User, User.ID)
 	if result.Error != nil {
 		return entities.Usuario{}
 	}
@@ -45,7 +45,7 @@ func (u User) GetID(User entities.Usuario) entities.Usuario {
 
 func (u User) GetUser(nombre string) entities.Usuario {
 	var User entities.Usuario
-	result := database.Database.Where("nombre = ?", nombre).First(&User)
+	result := database.Database.Where("nombre = ?", nombre).Preload("Acompañante").First(&User)
 	if result.Error != nil {
 		return entities.Usuario{}
 	}

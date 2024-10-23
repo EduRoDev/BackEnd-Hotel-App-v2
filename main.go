@@ -26,6 +26,7 @@ func main() {
 
 	// Rutas
 	routes.UserRoutes(router, logger)
+	routes.CompanionRoutes(router, logger)
 	routes.RoomRoutes(router, logger)
 	routes.ReservationRoutes(router, logger)
 	routes.PaymentRoutes(router, logger)

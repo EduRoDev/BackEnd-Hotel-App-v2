@@ -22,12 +22,21 @@ func wrapHandler(h http.HandlerFunc) http.HandlerFunc {
 func UserRoutes(router *mux.Router, logger *log.Logger) {
 	userController := controllers.NewUserController(logger)
 	router.HandleFunc("/login", wrapHandler(userController.Login)).Methods("POST")
-	router.HandleFunc("/user", wrapHandler(userController.Get)).Methods("GET")
-	router.HandleFunc("/user/{id}", wrapHandler(userController.GetID)).Methods("GET")
-	router.HandleFunc("/users/{nombre}", wrapHandler(userController.GetUser)).Methods("GET")
-	router.HandleFunc("/user", wrapHandler(userController.Post)).Methods("POST")
-	router.HandleFunc("/user/{id}", wrapHandler(userController.Modify)).Methods("PUT")
-	router.HandleFunc("/user/{id}", wrapHandler(userController.Delete)).Methods("DELETE")
+	router.HandleFunc("/users", wrapHandler(userController.Get)).Methods("GET")
+	router.HandleFunc("/users/{id}", wrapHandler(userController.GetID)).Methods("GET")
+	router.HandleFunc("/user/{nombre}", wrapHandler(userController.GetUser)).Methods("GET")
+	router.HandleFunc("/users", wrapHandler(userController.Post)).Methods("POST")
+	router.HandleFunc("/users/{id}", wrapHandler(userController.Modify)).Methods("PUT")
+	router.HandleFunc("/users/{id}", wrapHandler(userController.Delete)).Methods("DELETE")
+}
+
+func CompanionRoutes(router *mux.Router, logger *log.Logger) {
+	companionController := controllers.NewCompanionController(logger)
+	router.HandleFunc("/acompañantes", wrapHandler(companionController.Get)).Methods("GET")
+	router.HandleFunc("/acompañantes/{id}", wrapHandler(companionController.GetID)).Methods("GET")
+	router.HandleFunc("/acompañantes", wrapHandler(companionController.Create)).Methods("POST")
+	router.HandleFunc("/acompañantes/{id}", wrapHandler(companionController.Mod)).Methods("PUT")
+	router.HandleFunc("/acompañantes/{id}", wrapHandler(companionController.Delete)).Methods("DELETE")
 }
 
 func RoomRoutes(router *mux.Router, logger *log.Logger) {
