@@ -10,14 +10,11 @@ type Usuario struct {
 	Nombre             string       `gorm:"size:100" json:"nombre"`
 	Apellido           string       `gorm:"size:100" json:"apellido"`
 	Email              string       `gorm:"size:100;unique" json:"email"`
+	Edad               int          `gorm:"type:int" json:"edad"`
 	Telefono           string       `gorm:"size:20" json:"telefono"`
-	Nacionalidad       string       `gorm:"size:100" json:"nacionalidad"`
 	Ciudad             string       `gorm:"size:100" json:"ciudad"`
 	Pais               string       `gorm:"size:100" json:"pais"`
-	Ocupacion          string       `gorm:"size:100" json:"ocupacion"`
-	PaisProcedencia    string       `gorm:"size:100" json:"pais_procedencia"`
 	Direccion          string       `gorm:"size:255" json:"direccion"`
-	NumeroAcompañantes int          `gorm:"type:int" json:"numero_acompañantes"`
 	Acompañante        Acompañantes `gorm:"foreignKey:IDusuario" json:"acompañantes"`
 }
 
@@ -35,6 +32,7 @@ type Acompañante struct {
 	Apellido        string `gorm:"size:100" json:"apellido"`
 	TipoDocumento   string `gorm:"type:enum('CC','TI','TE','PP','PPT','NIT')" json:"tipo_documento"`
 	NumeroDocumento string `gorm:"size:50;unique" json:"numero_documento"`
+	NumeroTelefono  string `gorm:"size:50" json:"numero_telefono"`
 }
 
 type Acompañantes []Acompañante
@@ -47,7 +45,7 @@ func (Acompañante) TableName() string {
 // Entidad Habitacion
 type Habitacion struct {
 	ID     int     `gorm:"primaryKey;autoIncrement" json:"id_habitacion"`
-	Numero string  `gorm:"size:10" json:"numero"`
+	Nombre string  `gorm:"size:100" json:"nombre"`
 	Tipo   string  `gorm:"type:enum('sencilla','doble','suite')" json:"tipo"`
 	Precio float64 `gorm:"type:decimal(10,2)" json:"precio"`
 	Estado string  `gorm:"type:enum('disponible','reservada','ocupada')" json:"estado"`
@@ -86,6 +84,7 @@ type Pago struct {
 	IDReserva  int       `json:"id_reserva"`
 	Monto      float64   `gorm:"type:decimal(10,2)" json:"monto"`
 	MetodoPago string    `gorm:"type:enum('tarjeta','efectivo')" json:"metodo_pago"`
+	Estado     string    `gorm:"type:enum('pendiente','cancelada','realizado')" json:"estado"`
 	FechaPago  time.Time `json:"fecha_pago"`
 	Reserva    Reserva   `gorm:"foreignKey:IDReserva" json:"reserva"`
 }
@@ -95,38 +94,6 @@ type Pagos []Pago
 // Definir TableName para Pago
 func (Pago) TableName() string {
 	return "pago"
-}
-
-// Entidad Llave
-type Llave struct {
-	ID          int     `gorm:"primaryKey;autoIncrement" json:"id_llave"`
-	IDReserva   int     `json:"id_reserva"`
-	TipoLlave   string  `gorm:"type:enum('fisica','electronica')" json:"tipo_llave"`
-	EstadoLlave string  `gorm:"type:enum('activa','desactivada')" json:"estado_llave"`
-	Reserva     Reserva `gorm:"foreignKey:IDReserva" json:"reserva"`
-}
-
-type Llaves []Llave
-
-// Definir TableName para Llave
-func (Llave) TableName() string {
-	return "llave"
-}
-
-// Entidad CheckInCheckOut
-type CheckInCheckOut struct {
-	ID            int       `gorm:"primaryKey;autoIncrement" json:"id_checkin"`
-	IDReserva     int       `json:"id_reserva"`
-	FechaCheckIn  time.Time `json:"fecha_checkin"`
-	FechaCheckOut time.Time `json:"fecha_checkout"`
-	Reserva       Reserva   `gorm:"foreignKey:IDReserva" json:"reserva"`
-}
-
-type CheckInCheckOuts []CheckInCheckOut
-
-// Definir TableName para CheckInCheckOut
-func (CheckInCheckOut) TableName() string {
-	return "checkin_checkout"
 }
 
 // Entidad Personal
@@ -142,22 +109,6 @@ type Personals []Personal
 // Definir TableName para Personal
 func (Personal) TableName() string {
 	return "personal"
-}
-
-// Entidad FacturaElectronica
-type FacturaElectronica struct {
-	ID           int       `gorm:"primaryKey;autoIncrement" json:"id_factura"`
-	IDPago       int       `json:"id_pago"`
-	FechaFactura time.Time `json:"fecha_factura"`
-	Total        float64   `gorm:"type:decimal(10,2)" json:"total"`
-	Pago         Pago      `gorm:"foreignKey:IDPago" json:"pago"`
-}
-
-type FacturaElectronicas []FacturaElectronica
-
-// Definir TableName para FacturaElectronica
-func (FacturaElectronica) TableName() string {
-	return "factura_electronica"
 }
 
 // Entidad PersonalHabitacion
