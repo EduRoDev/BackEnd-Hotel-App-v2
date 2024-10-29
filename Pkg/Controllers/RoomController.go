@@ -81,7 +81,7 @@ func (rm RoomController) Post(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	data := entities.Habitacion{
-		Numero: habitacion.Numero,
+		Nombre: habitacion.Nombre,
 		Tipo:   habitacion.Tipo,
 		Precio: habitacion.Precio,
 		Estado: habitacion.Estado,
@@ -113,7 +113,7 @@ func (rm RoomController) Modify(w http.ResponseWriter, r *http.Request) {
 
 	data := entities.Habitacion{
 		ID:     idStr,
-		Numero: habitacion.Numero,
+		Nombre: habitacion.Nombre,
 		Tipo:   habitacion.Tipo,
 		Precio: habitacion.Precio,
 		Estado: habitacion.Estado,

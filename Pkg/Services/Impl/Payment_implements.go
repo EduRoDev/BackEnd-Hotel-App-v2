@@ -10,7 +10,11 @@ type Pago struct{}
 
 func (p Pago) Get() []entities.Pago {
 	var pago []entities.Pago
-	result := database.Database.Preload("Reserva").Preload("Reserva.Usuario").Preload("Reserva.Habitacion").Find(&pago)
+	result := database.Database.Preload("Reserva").
+		Preload("Reserva.Usuario").
+		Preload("Reserva.Usuario.Acompañante").
+		Preload("Reserva.Habitaciones.Habitacion").
+		Find(&pago)
 	if result.Error != nil {
 		return nil
 	}
@@ -18,7 +22,7 @@ func (p Pago) Get() []entities.Pago {
 }
 
 func (p Pago) GetID(pago entities.Pago) entities.Pago {
-	result := database.Database.Preload("Reserva").Preload("Reserva.Usuario").Preload("Reserva.Habitacion").First(&pago, pago.ID)
+	result := database.Database.Preload("Reserva").Preload("Reserva.Usuario").Preload("Reserva.Habitaciones.Habitacion").First(&pago, pago.ID)
 	if result.Error != nil {
 		return entities.Pago{}
 	}
@@ -67,7 +71,6 @@ func (p Pago) Create(Pago entities.Pago) map[string]interface{} {
 	return helpers.Success("Pago creado correctamente")
 }
 
-
 func (p Pago) Mod(Pago entities.Pago) map[string]interface{} {
 	result := database.Database.Model(&Pago).Updates(Pago)
 	if result.Error != nil {
@@ -82,4 +85,32 @@ func (p Pago) Del(pago entities.Pago) map[string]interface{} {
 		return helpers.Error(result.Error, "Error al eliminar pago")
 	}
 	return helpers.Success("Pago eliminado correctamente")
+}
+
+func (p Pago) Cancel(idReserva int) map[string]interface{} {
+	tx := database.Database.Begin()
+	var reserva entities.Reserva
+	if tx.First(&reserva, idReserva).Error != nil {
+		tx.Rollback()
+		return helpers.Error(tx.Error, "Error al obtener reserva")
+	}
+	reserva.Estado = "cancelada"
+	if err := tx.Save(&reserva).Error; err != nil {
+		tx.Rollback()
+		return helpers.Error(err, "Error al cancelar reserva")
+	}
+
+	var Pago entities.Pago
+	if tx.First(&Pago, idReserva).Error != nil {
+		tx.Rollback()
+		return helpers.Error(tx.Error, "Error al obtener pago")
+	}
+
+	Pago.Estado = "cancelada"
+	if err := tx.Save(&Pago).Error; err != nil {
+		tx.Rollback()
+		return helpers.Error(err, "Error al modificar pago")
+	}
+	tx.Commit()
+	return helpers.Success("Pago cancelado correctamente")
 }

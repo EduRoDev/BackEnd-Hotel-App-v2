@@ -11,16 +11,24 @@ import (
 type Reserva struct{}
 
 func (r Reserva) Get() []entities.Reserva {
-	var reserva []entities.Reserva
-	result := database.Database.Preload("Usuario").Preload("Habitacion").Find(&reserva)
+	var reservas []entities.Reserva
+	result := database.Database.
+		Preload("Usuario").
+		Preload("Usuario.Acompañante").
+		Preload("Habitacion").
+		Find(&reservas)
 	if result.Error != nil {
 		return nil
 	}
-	return reserva
+	return reservas
 }
 
 func (r Reserva) GetID(reserva entities.Reserva) entities.Reserva {
-	result := database.Database.Preload("Usuario").Preload("Habitacion").First(&reserva, reserva.ID)
+	result := database.Database.
+		Preload("Usuario").
+		Preload("Usuario.Acompañante").
+		Preload("Habitacion").
+		First(&reserva, reserva.ID)
 	if result.Error != nil {
 		return entities.Reserva{}
 	}
@@ -28,12 +36,17 @@ func (r Reserva) GetID(reserva entities.Reserva) entities.Reserva {
 }
 
 func (r Reserva) GetByUsuarioYFecha(idUsuario int, fechaEntrada time.Time) []entities.Reserva {
-	var reserva []entities.Reserva
-	result := database.Database.Preload("Usuario").Preload("Habitacion").Where("id_usuario = ? and fecha_entrada = ?", idUsuario, fechaEntrada).Find(&reserva)
+	var reservas []entities.Reserva
+	result := database.Database.
+		Preload("Usuario").
+		Preload("Usuario.Acompañante").
+		Preload("Habitacion").
+		Where("id_usuario = ? AND fecha_entrada = ?", idUsuario, fechaEntrada).
+		Find(&reservas)
 	if result.Error != nil {
 		return nil
 	}
-	return reserva
+	return reservas
 }
 
 func (r Reserva) Create(Reserva entities.Reserva) map[string]interface{} {
@@ -82,30 +95,3 @@ func (r Reserva) Del(reserva entities.Reserva) map[string]interface{} {
 	return helpers.Success("Reserva eliminada correctamente")
 }
 
-func (r Reserva) CancelReserva(reservaId int) map[string]interface{} {
-	tx := database.Database.Begin()
-	var reserva entities.Reserva
-	if tx.First(&reserva, reservaId).Error != nil {
-		tx.Rollback()
-		return helpers.Error(tx.Error, "Error al obtener reserva")
-	}
-	reserva.Estado = "cancelada"
-	if err := tx.Save(&reserva).Error; err != nil {
-		tx.Rollback()
-		return helpers.Error(err, "Error al cancelar reserva")
-	}
-
-	var Habitacion entities.Habitacion
-	if tx.First(&Habitacion, reserva.IDHabitacion).Error != nil {
-		tx.Rollback()
-		return helpers.Error(tx.Error, "Error al obtener habitacion")
-	}
-
-	Habitacion.Estado = "disponible"
-	if err := tx.Save(&Habitacion).Error; err != nil {
-		tx.Rollback()
-		return helpers.Error(err, "Error al modificar habitacion")
-	}
-	tx.Commit()
-	return helpers.Success("Reserva cancelada correctamente")
-}

@@ -22,12 +22,12 @@ func wrapHandler(h http.HandlerFunc) http.HandlerFunc {
 func UserRoutes(router *mux.Router, logger *log.Logger) {
 	userController := controllers.NewUserController(logger)
 	router.HandleFunc("/login", wrapHandler(userController.Login)).Methods("POST")
-	router.HandleFunc("/users", wrapHandler(userController.Get)).Methods("GET")
-	router.HandleFunc("/users/{id}", wrapHandler(userController.GetID)).Methods("GET")
-	router.HandleFunc("/user/{nombre}", wrapHandler(userController.GetUser)).Methods("GET")
-	router.HandleFunc("/users", wrapHandler(userController.Post)).Methods("POST")
-	router.HandleFunc("/users/{id}", wrapHandler(userController.Modify)).Methods("PUT")
-	router.HandleFunc("/users/{id}", wrapHandler(userController.Delete)).Methods("DELETE")
+	router.HandleFunc("/user", wrapHandler(userController.Get)).Methods("GET")
+	router.HandleFunc("/user/{id:[0-9]+}", wrapHandler(userController.GetID)).Methods("GET")
+	router.HandleFunc("/user/{nombre}/{apellido}", wrapHandler(userController.GetUser)).Methods("GET")
+	router.HandleFunc("/user", wrapHandler(userController.Post)).Methods("POST")
+	router.HandleFunc("/user/{id:[0-9]+}", wrapHandler(userController.Modify)).Methods("PUT")
+	router.HandleFunc("/user/{id:[0-9]+}", wrapHandler(userController.Delete)).Methods("DELETE")
 }
 
 func CompanionRoutes(router *mux.Router, logger *log.Logger) {
@@ -56,7 +56,6 @@ func ReservationRoutes(router *mux.Router, logger *log.Logger) {
 	router.HandleFunc("/reserva/{idUsuario}/{fechaEntrada}", wrapHandler(reservationController.GetByUsuarioYFecha)).Methods("GET")
 	router.HandleFunc("/reserva", wrapHandler(reservationController.Create)).Methods("POST")
 	router.HandleFunc("/reserva/{id}", wrapHandler(reservationController.Mod)).Methods("PUT")
-	router.HandleFunc("/cancelarReserva/{id}", wrapHandler(reservationController.Cancel)).Methods("DELETE")
 	router.HandleFunc("/reserva/{id}", wrapHandler(reservationController.Del)).Methods("DELETE")
 }
 
@@ -69,14 +68,7 @@ func PaymentRoutes(router *mux.Router, logger *log.Logger) {
 	router.HandleFunc("/pago/{id}", wrapHandler(paymentController.Del)).Methods("DELETE")
 }
 
-func KeyRoutes(router *mux.Router, logger *log.Logger) {
-	keyController := controllers.NewKeyController(logger)
-	router.HandleFunc("/llave", wrapHandler(keyController.Get)).Methods("GET")
-	router.HandleFunc("/llave/{id}", wrapHandler(keyController.GetID)).Methods("GET")
-	router.HandleFunc("/llave", wrapHandler(keyController.Create)).Methods("POST")
-	router.HandleFunc("/llave/{id}", wrapHandler(keyController.Modify)).Methods("PUT")
-	router.HandleFunc("/llave/{id}", wrapHandler(keyController.Delete)).Methods("DELETE")
-}
+
 
 func PersonalRoutes(router *mux.Router, logger *log.Logger) {
 	personalController := controllers.NewPersonalController(logger)
@@ -96,20 +88,5 @@ func PersonalRoomRoutes(router *mux.Router, logger *log.Logger) {
 	router.HandleFunc("/personalRoom/{id}", wrapHandler(personalRoomController.Delete)).Methods("DELETE")
 }
 
-func InvoiceRoutes(router *mux.Router, logger *log.Logger) {
-	invoiceController := controllers.NewInvoiceController(logger)
-	router.HandleFunc("/invoice", wrapHandler(invoiceController.Get)).Methods("GET")
-	router.HandleFunc("/invoice/{id}", wrapHandler(invoiceController.GetID)).Methods("GET")
-	router.HandleFunc("/invoice", wrapHandler(invoiceController.Asign)).Methods("POST")
-	router.HandleFunc("/invoice/{id}", wrapHandler(invoiceController.Modify)).Methods("PUT")
-	router.HandleFunc("/invoice/{id}", wrapHandler(invoiceController.Delete)).Methods("DELETE")
-}
 
-func CheckInRoutes(router *mux.Router, logger *log.Logger) {
-	checkInController := controllers.NewCheckController(logger)
-	router.HandleFunc("/checkIn", wrapHandler(checkInController.Get)).Methods("GET")
-	router.HandleFunc("/checkIn/{id}", wrapHandler(checkInController.GetID)).Methods("GET")
-	router.HandleFunc("/checkIn", wrapHandler(checkInController.Asign)).Methods("POST")
-	router.HandleFunc("/checkIn/{id}", wrapHandler(checkInController.Modify)).Methods("PUT")
-	router.HandleFunc("/checkIn/{id}", wrapHandler(checkInController.Delete)).Methods("DELETE")
-}
+

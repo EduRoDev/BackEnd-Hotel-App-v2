@@ -30,11 +30,8 @@ func main() {
 	routes.RoomRoutes(router, logger)
 	routes.ReservationRoutes(router, logger)
 	routes.PaymentRoutes(router, logger)
-	routes.KeyRoutes(router, logger)
-	routes.CheckInRoutes(router, logger)
 	routes.PersonalRoutes(router, logger)
 	routes.PersonalRoomRoutes(router, logger)
-	routes.InvoiceRoutes(router, logger)
 
 	// Rutas de middlewares
 	cors := Middlewares_cors.CorsMiddleware(router)

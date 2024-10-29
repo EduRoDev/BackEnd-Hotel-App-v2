@@ -125,5 +125,22 @@ func (py PaymentController) Del(w http.ResponseWriter, r *http.Request) {
 
 func (py PaymentController) Cancel(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
+	vr := mux.Vars(r)
+	idStr, err := strconv.Atoi(vr["id"])
+	if err != nil {
+		rp := helpers.Error(err, "Error al obtener ID de la reserva")
+		w.WriteHeader(http.StatusBadRequest) // Cambiado a 400 Bad Request
+		json.NewEncoder(w).Encode(rp)
+		return
+	}
 
+	// Llamar al servicio para cancelar la reserva
+	resultado := py.Py.Cancel(idStr)
+
+	// Verificar si hubo un error en la operación
+	if resultado["status"] == "error" {
+		w.WriteHeader(http.StatusInternalServerError) // Error en el servidor si la operación falló
+		json.NewEncoder(w).Encode(resultado)
+		return
+	}
 }

@@ -90,7 +90,8 @@ func (u UserController) GetUser(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
 	vars := mux.Vars(r)
 	nombre := vars["nombre"]
-	User := u.Us.GetUser(nombre)
+	apellido := vars["apellido"]
+	User := u.Us.GetUser(nombre, apellido)
 	w.WriteHeader(http.StatusOK)
 	json.NewEncoder(w).Encode(User)
 }
@@ -112,24 +113,21 @@ func (u UserController) Post(w http.ResponseWriter, r *http.Request) {
 		Nombre:             user.Nombre,
 		Apellido:           user.Apellido,
 		Email:              user.Email,
+		Edad:               user.Edad,
 		Telefono:           user.Telefono,
-		Nacionalidad:       user.Nacionalidad,
 		Ciudad:             user.Ciudad,
 		Pais:               user.Pais,
-		Ocupacion:          user.Ocupacion,
-		PaisProcedencia:    user.PaisProcedencia,
 		Direccion:          user.Direccion,
-		NumeroAcompañantes: user.NumeroAcompañantes,
 		Acompañante:        make([]entities.Acompañante, len(user.Acompañantes)),
 	}
 
-	
 	for i, a := range user.Acompañantes {
 		data.Acompañante[i] = entities.Acompañante{
 			Nombre:          a.Nombre,
 			Apellido:        a.Apellido,
 			TipoDocumento:   a.TipoDocumento,
 			NumeroDocumento: a.NumeroDocumento,
+			NumeroTelefono:  a.NumeroTelefono,
 		}
 	}
 
@@ -147,61 +145,57 @@ func (u UserController) Post(w http.ResponseWriter, r *http.Request) {
 }
 
 func (u UserController) Modify(w http.ResponseWriter, r *http.Request) {
-    w.Header().Set("Content-Type", "application/json")
-    vr := mux.Vars(r)
-    idStr, err := strconv.Atoi(vr["id"])
-    if err != nil {
-        rp := helpers.Error(err, "Error al obtener usuario")
-        w.WriteHeader(http.StatusNotFound)
-        json.NewEncoder(w).Encode(rp)
-        return
-    }
+	w.Header().Set("Content-Type", "application/json")
+	vr := mux.Vars(r)
+	idStr, err := strconv.Atoi(vr["id"])
+	if err != nil {
+		rp := helpers.Error(err, "Error al obtener usuario")
+		w.WriteHeader(http.StatusNotFound)
+		json.NewEncoder(w).Encode(rp)
+		return
+	}
 
-    var user dto.UsuarioDTO
-    if err := json.NewDecoder(r.Body).Decode(&user); err != nil {
-        rp := helpers.Error(err, "Error al obtener usuario")
-        w.WriteHeader(http.StatusNotFound)
-        json.NewEncoder(w).Encode(rp)
-        return
-    }
+	var user dto.UsuarioDTO
+	if err := json.NewDecoder(r.Body).Decode(&user); err != nil {
+		rp := helpers.Error(err, "Error al obtener usuario")
+		w.WriteHeader(http.StatusNotFound)
+		json.NewEncoder(w).Encode(rp)
+		return
+	}
 
+	var acompañantes []entities.Acompañante
+	for _, acompDTO := range user.Acompañantes {
+		acompañante := entities.Acompañante{
+			ID:              acompDTO.ID,
+			IDusuario:       idStr,
+			Nombre:          acompDTO.Nombre,
+			Apellido:        acompDTO.Apellido,
+			TipoDocumento:   acompDTO.TipoDocumento,
+			NumeroDocumento: acompDTO.NumeroDocumento,
+			NumeroTelefono:  acompDTO.NumeroTelefono,
+		}
+		acompañantes = append(acompañantes, acompañante)
+	}
 
-    var acompañantes []entities.Acompañante
-    for _, acompDTO := range user.Acompañantes {
-        acompañante := entities.Acompañante{
-            ID:              acompDTO.ID,
-            IDusuario:       idStr, 
-            Nombre:          acompDTO.Nombre,
-            Apellido:        acompDTO.Apellido,
-            TipoDocumento:   acompDTO.TipoDocumento,
-            NumeroDocumento: acompDTO.NumeroDocumento,
-        }
-        acompañantes = append(acompañantes, acompañante)
-    }
+	data := entities.Usuario{
+		ID:                 idStr,
+		TipoDocumento:      user.TipoDocumento,
+		NumeroDocumento:    user.NumeroDocumento,
+		Nombre:             user.Nombre,
+		Apellido:           user.Apellido,
+		Email:              user.Email,
+		Edad:               user.Edad,
+		Telefono:           user.Telefono,
+		Ciudad:             user.Ciudad,
+		Pais:               user.Pais,
+		Direccion:          user.Direccion,
+		Acompañante:        acompañantes,
+	}
 
-    data := entities.Usuario{
-        ID:                 idStr,
-        TipoDocumento:      user.TipoDocumento,
-        NumeroDocumento:    user.NumeroDocumento,
-        Nombre:             user.Nombre,
-        Apellido:           user.Apellido,
-        Email:              user.Email,
-        Telefono:           user.Telefono,
-        Nacionalidad:       user.Nacionalidad,
-        Ciudad:             user.Ciudad,
-        Pais:               user.Pais,
-        Ocupacion:          user.Ocupacion,
-        PaisProcedencia:    user.PaisProcedencia,
-        Direccion:          user.Direccion,
-        NumeroAcompañantes: user.NumeroAcompañantes,
-        Acompañante:        acompañantes, 
-    }
-
-    findUser := u.Us.Mod(data)
-    w.WriteHeader(http.StatusAccepted)
-    json.NewEncoder(w).Encode(findUser)
+	findUser := u.Us.Mod(data)
+	w.WriteHeader(http.StatusAccepted)
+	json.NewEncoder(w).Encode(findUser)
 }
-
 
 func (u UserController) Delete(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
