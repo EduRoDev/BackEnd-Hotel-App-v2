@@ -4,29 +4,26 @@ import "time"
 
 // DTO para Usuario
 type UsuarioDTO struct {
-	ID                 int              `json:"id_usuario"`
-	TipoDocumento      string           `json:"tipo_documento"`
-	NumeroDocumento    string           `json:"numero_documento"`
-	Nombre             string           `json:"nombre"`
-	Apellido           string           `json:"apellido"`
-	Email              string           `json:"email"`
-	Edad               int              `json:"edad"`
-	Telefono           string           `json:"telefono"`
-	Ciudad             string           `json:"ciudad"`
-	Pais               string           `json:"pais"`
-	Direccion          string           `json:"direccion"`
-
-	Acompañantes       []AcompañanteDTO `json:"acompañantes"`
+	ID              int              `json:"id_usuario"`
+	TipoDocumento   string           `json:"tipo_documento"`
+	NumeroDocumento string           `json:"numero_documento"`
+	Nombre          string           `json:"nombre"`
+	Apellido        string           `json:"apellido"`
+	Email           string           `json:"email"`
+	FechaNacimiento string        `json:"fecha_nacimiento"`
+	Telefono        string           `json:"telefono"`
+	Ciudad          string           `json:"ciudad"`
+	Pais            string           `json:"pais"`
+	Direccion       string           `json:"direccion"`
+	Acompañantes    []AcompañanteDTO `json:"acompañantes"`
 }
 
 // DTO para Acompañante
 type AcompañanteDTO struct {
 	ID              int    `json:"id_acompañante"`
 	Nombre          string `json:"nombre"`
-	Apellido        string `json:"apellido"`
 	TipoDocumento   string `json:"tipo_documento"`
 	NumeroDocumento string `json:"numero_documento"`
-	NumeroTelefono  string `json:"numero_telefono"`
 }
 
 // DTO para Habitacion

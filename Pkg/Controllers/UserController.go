@@ -107,27 +107,34 @@ func (u UserController) Post(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	fechaNacimiento, err := time.Parse("2006-01-02", user.FechaNacimiento)
+    if err != nil {
+        rp := helpers.Error(err, "Formato de fecha incorrecto. Usa AAAA-MM-DD")
+        w.WriteHeader(http.StatusBadRequest)
+        json.NewEncoder(w).Encode(rp)
+        return
+    }
+	
+
 	data := entities.Usuario{
-		TipoDocumento:      user.TipoDocumento,
-		NumeroDocumento:    user.NumeroDocumento,
-		Nombre:             user.Nombre,
-		Apellido:           user.Apellido,
-		Email:              user.Email,
-		Edad:               user.Edad,
-		Telefono:           user.Telefono,
-		Ciudad:             user.Ciudad,
-		Pais:               user.Pais,
-		Direccion:          user.Direccion,
-		Acompañante:        make([]entities.Acompañante, len(user.Acompañantes)),
+		TipoDocumento:   user.TipoDocumento,
+		NumeroDocumento: user.NumeroDocumento,
+		Nombre:          user.Nombre,
+		Apellido:        user.Apellido,
+		Email:           user.Email,
+		FechaNacimiento: fechaNacimiento,
+		Telefono:        user.Telefono,
+		Ciudad:          user.Ciudad,
+		Pais:            user.Pais,
+		Direccion:       user.Direccion,
+		Acompañante:     make([]entities.Acompañante, len(user.Acompañantes)),
 	}
 
 	for i, a := range user.Acompañantes {
 		data.Acompañante[i] = entities.Acompañante{
 			Nombre:          a.Nombre,
-			Apellido:        a.Apellido,
 			TipoDocumento:   a.TipoDocumento,
 			NumeroDocumento: a.NumeroDocumento,
-			NumeroTelefono:  a.NumeroTelefono,
 		}
 	}
 
@@ -169,27 +176,33 @@ func (u UserController) Modify(w http.ResponseWriter, r *http.Request) {
 			ID:              acompDTO.ID,
 			IDusuario:       idStr,
 			Nombre:          acompDTO.Nombre,
-			Apellido:        acompDTO.Apellido,
 			TipoDocumento:   acompDTO.TipoDocumento,
 			NumeroDocumento: acompDTO.NumeroDocumento,
-			NumeroTelefono:  acompDTO.NumeroTelefono,
 		}
 		acompañantes = append(acompañantes, acompañante)
 	}
 
+	fechaNacimiento, err := time.Parse("2006-01-02", user.FechaNacimiento)
+    if err != nil {
+        rp := helpers.Error(err, "Formato de fecha incorrecto. Usa AAAA-MM-DD")
+        w.WriteHeader(http.StatusBadRequest)
+        json.NewEncoder(w).Encode(rp)
+        return
+    }
+
 	data := entities.Usuario{
-		ID:                 idStr,
-		TipoDocumento:      user.TipoDocumento,
-		NumeroDocumento:    user.NumeroDocumento,
-		Nombre:             user.Nombre,
-		Apellido:           user.Apellido,
-		Email:              user.Email,
-		Edad:               user.Edad,
-		Telefono:           user.Telefono,
-		Ciudad:             user.Ciudad,
-		Pais:               user.Pais,
-		Direccion:          user.Direccion,
-		Acompañante:        acompañantes,
+		ID:              idStr,
+		TipoDocumento:   user.TipoDocumento,
+		NumeroDocumento: user.NumeroDocumento,
+		Nombre:          user.Nombre,
+		Apellido:        user.Apellido,
+		Email:           user.Email,
+		FechaNacimiento: fechaNacimiento,
+		Telefono:        user.Telefono,
+		Ciudad:          user.Ciudad,
+		Pais:            user.Pais,
+		Direccion:       user.Direccion,
+		Acompañante:     acompañantes,
 	}
 
 	findUser := u.Us.Mod(data)
