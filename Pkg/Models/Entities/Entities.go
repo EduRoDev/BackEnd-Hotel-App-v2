@@ -4,18 +4,18 @@ import "time"
 
 // Entidad Usuario
 type Usuario struct {
-	ID                 int          `gorm:"primaryKey;autoIncrement" json:"id_usuario"`
-	TipoDocumento      string       `gorm:"type:enum('CC','TI','TE','PP','PPT','NIT')" json:"tipo_documento"`
-	NumeroDocumento    string       `gorm:"size:50;unique" json:"numero_documento"`
-	Nombre             string       `gorm:"size:100" json:"nombre"`
-	Apellido           string       `gorm:"size:100" json:"apellido"`
-	Email              string       `gorm:"size:100;unique" json:"email"`
-	Edad               int          `gorm:"type:int" json:"edad"`
-	Telefono           string       `gorm:"size:20" json:"telefono"`
-	Ciudad             string       `gorm:"size:100" json:"ciudad"`
-	Pais               string       `gorm:"size:100" json:"pais"`
-	Direccion          string       `gorm:"size:255" json:"direccion"`
-	Acompañante        Acompañantes `gorm:"foreignKey:IDusuario" json:"acompañantes"`
+	ID              int          `gorm:"primaryKey;autoIncrement" json:"id_usuario"`
+	TipoDocumento   string       `gorm:"type:enum('CC','TI','TE','PP','PPT','NIT')" json:"tipo_documento"`
+	NumeroDocumento string       `gorm:"size:50;unique" json:"numero_documento"`
+	Nombre          string       `gorm:"size:100" json:"nombre"`
+	Apellido        string       `gorm:"size:100" json:"apellido"`
+	Email           string       `gorm:"size:100;unique" json:"email"`
+	FechaNacimiento time.Time    `json:"fecha_nacimiento"`
+	Telefono        string       `gorm:"size:20" json:"telefono"`
+	Ciudad          string       `gorm:"size:100" json:"ciudad"`
+	Pais            string       `gorm:"size:100" json:"pais"`
+	Direccion       string       `gorm:"size:255" json:"direccion"`
+	Acompañante     Acompañantes `gorm:"foreignKey:IDusuario" json:"acompañantes"`
 }
 
 type Usuarios []Usuario
@@ -29,10 +29,8 @@ type Acompañante struct {
 	ID              int    `gorm:"primaryKey;autoIncrement" json:"id_acompañante"`
 	IDusuario       int    `gorm:"index" json:"usuario"`
 	Nombre          string `gorm:"size:100" json:"nombre"`
-	Apellido        string `gorm:"size:100" json:"apellido"`
 	TipoDocumento   string `gorm:"type:enum('CC','TI','TE','PP','PPT','NIT')" json:"tipo_documento"`
 	NumeroDocumento string `gorm:"size:50;unique" json:"numero_documento"`
-	NumeroTelefono  string `gorm:"size:50" json:"numero_telefono"`
 }
 
 type Acompañantes []Acompañante
