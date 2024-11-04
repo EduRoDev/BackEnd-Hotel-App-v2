@@ -21,6 +21,7 @@ type UsuarioDTO struct {
 // DTO para Acompañante
 type AcompañanteDTO struct {
 	ID              int    `json:"id_acompañante"`
+	IDUsuario         int    `json:"usuario"`
 	Nombre          string `json:"nombre"`
 	TipoDocumento   string `json:"tipo_documento"`
 	NumeroDocumento string `json:"numero_documento"`

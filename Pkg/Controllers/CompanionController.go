@@ -7,6 +7,8 @@ import (
 	"strconv"
 
 	helpers "github.com/EduRoDev/BackEnd-Hotel-App-v2/Pkg/Helpers"
+
+	dto "github.com/EduRoDev/BackEnd-Hotel-App-v2/Pkg/Models/Dto"
 	entities "github.com/EduRoDev/BackEnd-Hotel-App-v2/Pkg/Models/Entities"
 	impl "github.com/EduRoDev/BackEnd-Hotel-App-v2/Pkg/Services/Impl"
 	interfaces "github.com/EduRoDev/BackEnd-Hotel-App-v2/Pkg/Services/Interfaces"
@@ -54,22 +56,31 @@ func (c CompanionController) GetID(w http.ResponseWriter, r *http.Request) {
 	json.NewEncoder(w).Encode(findAcompañante)
 }
 
-func (c CompanionController) Create(w http.ResponseWriter, r *http.Request) {
+func (c CompanionController) POST(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
-	var acompañante entities.Acompañante
+	var acompañante dto.AcompañanteDTO
 	if err := json.NewDecoder(r.Body).Decode(&acompañante); err != nil {
+		rp := helpers.Error(err, "Error al obtener acompañante")
 		w.WriteHeader(http.StatusBadRequest)
-		helpers.Error(err, "Error al obtener acompañante")
+		json.NewEncoder(w).Encode(rp)
 		return
 	}
-	findAcompañante := c.C.Create(acompañante)
-	if findAcompañante["error"] != nil {
+
+	data := entities.Acompañante{
+		IDusuario:       acompañante.IDUsuario,
+		Nombre:          acompañante.Nombre,
+		TipoDocumento:   acompañante.TipoDocumento,
+		NumeroDocumento: acompañante.NumeroDocumento,
+	}
+	Companion := c.C.Create(data)
+	if Companion["error"] != nil {
+		rp := helpers.Error(nil, "Error al crear acompañante")
 		w.WriteHeader(http.StatusInternalServerError)
-		helpers.Error(nil, "Error al crear acompañante")
+		json.NewEncoder(w).Encode(rp)
 		return
 	}
 	w.WriteHeader(http.StatusCreated)
-	json.NewEncoder(w).Encode(findAcompañante)
+	json.NewEncoder(w).Encode(Companion)
 }
 
 func (c CompanionController) Mod(w http.ResponseWriter, r *http.Request) {
