@@ -32,11 +32,11 @@ func UserRoutes(router *mux.Router, logger *log.Logger) {
 
 func CompanionRoutes(router *mux.Router, logger *log.Logger) {
 	companionController := controllers.NewCompanionController(logger)
-	router.HandleFunc("/acompañantes", wrapHandler(companionController.Get)).Methods("GET")
-	router.HandleFunc("/acompañantes/{id}", wrapHandler(companionController.GetID)).Methods("GET")
-	router.HandleFunc("/acompañantes", wrapHandler(companionController.Create)).Methods("POST")
-	router.HandleFunc("/acompañantes/{id}", wrapHandler(companionController.Mod)).Methods("PUT")
-	router.HandleFunc("/acompañantes/{id}", wrapHandler(companionController.Delete)).Methods("DELETE")
+	router.HandleFunc("/acompañante", wrapHandler(companionController.Get)).Methods("GET")
+	router.HandleFunc("/acompañante/{id:[0-9]+}", wrapHandler(companionController.GetID)).Methods("GET")
+	router.HandleFunc("/acompañante", wrapHandler(companionController.POST)).Methods("POST")
+	router.HandleFunc("/acompañante/{id:[0-9]+}", wrapHandler(companionController.Mod)).Methods("PUT")
+	router.HandleFunc("/acompañante/{id:[0-9]+}", wrapHandler(companionController.Delete)).Methods("DELETE")
 }
 
 func RoomRoutes(router *mux.Router, logger *log.Logger) {
@@ -68,8 +68,6 @@ func PaymentRoutes(router *mux.Router, logger *log.Logger) {
 	router.HandleFunc("/pago/{id}", wrapHandler(paymentController.Del)).Methods("DELETE")
 }
 
-
-
 func PersonalRoutes(router *mux.Router, logger *log.Logger) {
 	personalController := controllers.NewPersonalController(logger)
 	router.HandleFunc("/personal", wrapHandler(personalController.Get)).Methods("GET")
@@ -87,6 +85,3 @@ func PersonalRoomRoutes(router *mux.Router, logger *log.Logger) {
 	router.HandleFunc("/personalRoom/{id}", wrapHandler(personalRoomController.Modify)).Methods("PUT")
 	router.HandleFunc("/personalRoom/{id}", wrapHandler(personalRoomController.Delete)).Methods("DELETE")
 }
-
-
-
