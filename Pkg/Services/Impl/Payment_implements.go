@@ -13,7 +13,7 @@ func (p Pago) Get() []entities.Pago {
 	result := database.Database.Preload("Reserva").
 		Preload("Reserva.Usuario").
 		Preload("Reserva.Usuario.Acompañante").
-		Preload("Reserva.Habitaciones.Habitacion").
+		Preload("Reserva.Habitacion").
 		Find(&pago)
 	if result.Error != nil {
 		return nil
@@ -22,7 +22,11 @@ func (p Pago) Get() []entities.Pago {
 }
 
 func (p Pago) GetID(pago entities.Pago) entities.Pago {
-	result := database.Database.Preload("Reserva").Preload("Reserva.Usuario").Preload("Reserva.Habitaciones.Habitacion").First(&pago, pago.ID)
+	result := database.Database.Preload("Reserva").
+	Preload("Reserva.Usuario").
+	Preload("Reserva.Usuario.Acompañante").
+	Preload("Reserva.Habitacion").
+	First(&pago, pago.ID)
 	if result.Error != nil {
 		return entities.Pago{}
 	}
@@ -32,7 +36,6 @@ func (p Pago) GetID(pago entities.Pago) entities.Pago {
 func (p Pago) Create(Pago entities.Pago) map[string]interface{} {
 	tx := database.Database.Begin()
 
-	
 	var Reserva entities.Reserva
 	if err := tx.First(&Reserva, Pago.IDReserva).Error; err != nil {
 		tx.Rollback()
@@ -62,11 +65,16 @@ func (p Pago) Create(Pago entities.Pago) map[string]interface{} {
 		return helpers.Error(err, "Error al actualizar habitacion")
 	}
 
-	if err := tx.Create(&Pago).Error; err != nil {
-		tx.Rollback()
-		return helpers.Error(err, "Error al crear el pago")
+	var pago entities.Pago
+	if pago.Estado == "pendiente" {
+		pago.Estado = "realizado"
+		if err := tx.Create(&Pago).Error; err != nil {
+			tx.Rollback()
+			return helpers.Error(err, "Error al crear el pago")
+		}
 	}
-	
+
+
 	tx.Commit()
 	return helpers.Success("Pago creado correctamente")
 }
