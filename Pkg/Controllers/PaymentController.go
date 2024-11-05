@@ -5,6 +5,7 @@ import (
 	"log"
 	"net/http"
 	"strconv"
+	"time"
 
 	helpers "github.com/EduRoDev/BackEnd-Hotel-App-v2/Pkg/Helpers"
 	dto "github.com/EduRoDev/BackEnd-Hotel-App-v2/Pkg/Models/Dto"
@@ -61,12 +62,16 @@ func (py PaymentController) Create(w http.ResponseWriter, r *http.Request) {
 		json.NewEncoder(w).Encode(rp)
 		return
 	}
+
+	fechaPago, _ := time.Parse("2006-01-02 15:04:05", pago.FechaPago+" 00:00:00")
+
 	data := entities.Pago{
 		ID:         pago.ID,
 		IDReserva:  pago.IDReserva,
 		Monto:      pago.Monto,
+		Estado:     pago.Estado,
 		MetodoPago: pago.MetodoPago,
-		FechaPago:  pago.FechaPago,
+		FechaPago:  fechaPago,
 	}
 
 	findPago := py.Py.Create(data)

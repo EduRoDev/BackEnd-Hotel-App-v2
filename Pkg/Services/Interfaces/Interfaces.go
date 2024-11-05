@@ -36,7 +36,7 @@ type Habitacion interface {
 type Reservation interface {
 	Get() []entities.Reserva
 	GetID(Reserva entities.Reserva) entities.Reserva
-	GetByUsuarioYFecha(idUsuario int, fechaEntrada time.Time) []entities.Reserva
+	GetByUsuarioYFecha(idUsuario int, fechaEntrada time.Time) entities.Reserva
 	Create(Reserva entities.Reserva) map[string]interface{}
 	Mod(Reserva entities.Reserva) map[string]interface{}
 	Del(Reserva entities.Reserva) map[string]interface{}

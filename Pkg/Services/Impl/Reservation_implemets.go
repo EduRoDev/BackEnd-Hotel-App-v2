@@ -35,18 +35,18 @@ func (r Reserva) GetID(reserva entities.Reserva) entities.Reserva {
 	return reserva
 }
 
-func (r Reserva) GetByUsuarioYFecha(idUsuario int, fechaEntrada time.Time) []entities.Reserva {
-	var reservas []entities.Reserva
+func (r Reserva) GetByUsuarioYFecha(idUsuario int, fechaEntrada time.Time) entities.Reserva {
+	var reserva entities.Reserva
 	result := database.Database.
 		Preload("Usuario").
 		Preload("Usuario.Acompañante").
 		Preload("Habitacion").
 		Where("id_usuario = ? AND fecha_entrada = ?", idUsuario, fechaEntrada).
-		Find(&reservas)
+		Find(&reserva)
 	if result.Error != nil {
-		return nil
+		return entities.Reserva{}
 	}
-	return reservas
+	return reserva
 }
 
 func (r Reserva) Create(Reserva entities.Reserva) map[string]interface{} {

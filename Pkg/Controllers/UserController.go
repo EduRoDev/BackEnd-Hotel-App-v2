@@ -107,7 +107,7 @@ func (u UserController) Post(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	fechaNacimiento, err := time.Parse("2006-01-02", user.FechaNacimiento)
+	fechaNacimiento, err := time.Parse("2006-01-02 15:04:05", user.FechaNacimiento + " 00:00:00")
     if err != nil {
         rp := helpers.Error(err, "Formato de fecha incorrecto. Usa AAAA-MM-DD")
         w.WriteHeader(http.StatusBadRequest)

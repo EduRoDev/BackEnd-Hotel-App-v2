@@ -81,7 +81,7 @@ type Pago struct {
 	ID         int       `gorm:"primaryKey;autoIncrement" json:"id_pago"`
 	IDReserva  int       `json:"id_reserva"`
 	Monto      float64   `gorm:"type:decimal(10,2)" json:"monto"`
-	MetodoPago string    `gorm:"type:enum('tarjeta','efectivo')" json:"metodo_pago"`
+	MetodoPago string    `gorm:"type:enum('tarjeta')" json:"metodo_pago"`
 	Estado     string    `gorm:"type:enum('pendiente','cancelada','realizado')" json:"estado"`
 	FechaPago  time.Time `json:"fecha_pago"`
 	Reserva    Reserva   `gorm:"foreignKey:IDReserva" json:"reserva"`

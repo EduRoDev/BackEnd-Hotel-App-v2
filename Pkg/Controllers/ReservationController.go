@@ -63,7 +63,7 @@ func (rs ReservationController) GetByUsuarioYFecha(w http.ResponseWriter, r *htt
 		json.NewEncoder(w).Encode(rp)
 		return
 	}
-	fechaEntrada, err := time.Parse(time.RFC3339, vr["fechaEntrada"])
+	fechaEntrada, err := time.Parse("2006-01-02", vr["fechaEntrada"])
 	if err != nil {
 		rp := helpers.Error(err, "Error al obtener reserva")
 		w.WriteHeader(http.StatusBadRequest)
@@ -84,11 +84,16 @@ func (rs ReservationController) Create(w http.ResponseWriter, r *http.Request) {
 		json.NewEncoder(w).Encode(rp)
 		return
 	}
+
+	fechaReserva, _ := time.Parse("2006-01-02 15:04:05", reserva.FechaReserva+" 00:00:00")
+	fechaEntrada, _ := time.Parse("2006-01-02 15:04:05", reserva.FechaEntrada+" 00:00:00")
+	fechaSalida, _ := time.Parse("2006-01-02 15:04:05", reserva.FechaSalida+" 00:00:00")
+
 	data := entities.Reserva{
 		ID:           reserva.ID,
-		FechaReserva: reserva.FechaReserva,
-		FechaEntrada: reserva.FechaEntrada,
-		FechaSalida:  reserva.FechaSalida,
+		FechaReserva: fechaReserva,
+		FechaEntrada: fechaEntrada,
+		FechaSalida:  fechaSalida,
 		Estado:       reserva.Estado,
 		IDUsuario:    reserva.IDUsuario,
 		IDHabitacion: reserva.IDHabitacion,

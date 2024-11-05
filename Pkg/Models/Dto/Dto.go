@@ -10,7 +10,7 @@ type UsuarioDTO struct {
 	Nombre          string           `json:"nombre"`
 	Apellido        string           `json:"apellido"`
 	Email           string           `json:"email"`
-	FechaNacimiento string        `json:"fecha_nacimiento"`
+	FechaNacimiento string           `json:"fecha_nacimiento"`
 	Telefono        string           `json:"telefono"`
 	Ciudad          string           `json:"ciudad"`
 	Pais            string           `json:"pais"`
@@ -21,7 +21,7 @@ type UsuarioDTO struct {
 // DTO para Acompañante
 type AcompañanteDTO struct {
 	ID              int    `json:"id_acompañante"`
-	IDUsuario         int    `json:"usuario"`
+	IDUsuario       int    `json:"usuario"`
 	Nombre          string `json:"nombre"`
 	TipoDocumento   string `json:"tipo_documento"`
 	NumeroDocumento string `json:"numero_documento"`
@@ -38,13 +38,13 @@ type HabitacionDTO struct {
 
 // DTO para Reserva
 type ReservaDTO struct {
-	ID           int       `json:"id_reserva"`
-	FechaReserva time.Time `json:"fecha_reserva"`
-	FechaEntrada time.Time `json:"fecha_entrada"`
-	FechaSalida  time.Time `json:"fecha_salida"`
-	Estado       string    `json:"estado"`
-	IDUsuario    int       `json:"id_usuario"`
-	IDHabitacion int       `json:"id_habitacion"`
+	ID           int    `json:"id_reserva"`
+	FechaReserva string `json:"fecha_reserva"`
+	FechaEntrada string `json:"fecha_entrada"`
+	FechaSalida  string `json:"fecha_salida"`
+	Estado       string `json:"estado"`
+	IDUsuario    int    `json:"id_usuario"`
+	IDHabitacion int    `json:"id_habitacion"`
 }
 
 // DTO para Pago
@@ -52,8 +52,9 @@ type PagoDTO struct {
 	ID         int       `json:"id_pago"`
 	IDReserva  int       `json:"id_reserva"`
 	Monto      float64   `json:"monto"`
+	Estado     string    `json:"estado"`
 	MetodoPago string    `json:"metodo_pago"`
-	FechaPago  time.Time `json:"fecha_pago"`
+	FechaPago  string `json:"fecha_pago"`
 }
 
 // DTO para Personal
