@@ -7,7 +7,7 @@ import (
 )
 
 type User interface {
-	Login(nombre string, numero_documento string) (string, error)
+	Login(email string, numero_documento string) (string, error)
 	Get() []entities.Usuario
 	GetID(User entities.Usuario) entities.Usuario
 	GetUser(nombre string, apellido string) entities.Usuario

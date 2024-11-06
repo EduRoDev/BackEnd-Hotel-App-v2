@@ -2,6 +2,6 @@ package entities
 
 // LoginRequest Struct
 type LoginRequest struct {
-	Nombre          string `json:"nombre"`
+	Email          string `json:"email"`
 	NumeroDocumento string `json:"numero_documento"`
 }

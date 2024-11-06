@@ -44,7 +44,7 @@ func (u UserController) Login(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	user, err := u.Us.Login(loginRequest.Nombre, loginRequest.NumeroDocumento)
+	user, err := u.Us.Login(loginRequest.Email, loginRequest.NumeroDocumento)
 	if err != nil {
 		rp := helpers.ErrorWithStatus("Error", "Error al conectar con el servidor", "500")
 		w.WriteHeader(http.StatusInternalServerError)
