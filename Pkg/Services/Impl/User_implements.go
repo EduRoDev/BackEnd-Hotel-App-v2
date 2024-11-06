@@ -11,10 +11,10 @@ import (
 
 type User struct{}
 
-func (u User) Login(nombre string, numeroDocumento string) (string, error) {
+func (u User) Login(email string, numeroDocumento string) (string, error) {
 	var usuario entities.Usuario
 
-	result := database.Database.Where("nombre = ? AND numero_documento = ?", nombre, numeroDocumento).First(&usuario)
+	result := database.Database.Where("email = ? AND numero_documento = ?", email, numeroDocumento).First(&usuario)
 	if result.Error != nil {
 		return "", errors.New("usuario no encontrado")
 	}
