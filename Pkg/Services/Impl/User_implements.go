@@ -12,14 +12,15 @@ import (
 type User struct{}
 
 func (u User) Login(email string, numeroDocumento string) (string, error) {
-	var usuario entities.Usuario
+	var reserva entities.Reserva
+	result := database.Database.Joins("JOIN usuario ON usuario.id = reserva.id_usuario").
+		Where("usuario.email = ? AND usuario.numero_documento = ?", email, numeroDocumento).
+		First(&reserva)
 
-	result := database.Database.Where("email = ? AND numero_documento = ?", email, numeroDocumento).First(&usuario)
 	if result.Error != nil {
 		return "", errors.New("usuario no encontrado")
 	}
-
-	token, err := auth.GenerateToken(usuario.ID, usuario.Nombre)
+	token, err := auth.GenerateToken(reserva.ID)
 	if err != nil {
 		return "", errors.New("error al generar el token")
 	}
