@@ -8,11 +8,10 @@ import (
 
 var jwtKey = []byte("secret")
 
-func GenerateToken(userId int, userName string) (string, error) {
+func GenerateToken(reservaId int) (string, error) {
 	claims := jwt.MapClaims{
-		"id":   userId,
+		"id":   reservaId,
 		"exp":  time.Now().Add(time.Hour * 24).Unix(),
-		"name": userName,
 	}
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
 	return token.SignedString(jwtKey)

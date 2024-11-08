@@ -42,46 +42,46 @@ func CompanionRoutes(router *mux.Router, logger *log.Logger) {
 func RoomRoutes(router *mux.Router, logger *log.Logger) {
 	roomController := controllers.NewRoomController(logger)
 	router.HandleFunc("/habitacion", wrapHandler(roomController.Get)).Methods("GET")
-	router.HandleFunc("/habitacion/{id}", wrapHandler(roomController.GetID)).Methods("GET")
+	router.HandleFunc("/habitacion/{id:[0-9]+}", wrapHandler(roomController.GetID)).Methods("GET")
 	router.HandleFunc("/disponible", wrapHandler(roomController.GetAvailable)).Methods("GET")
 	router.HandleFunc("/habitacion", wrapHandler(roomController.Post)).Methods("POST")
-	router.HandleFunc("/habitacion/{id}", wrapHandler(roomController.Modify)).Methods("PUT")
-	router.HandleFunc("/habitacion/{id}", wrapHandler(roomController.Delete)).Methods("DELETE")
+	router.HandleFunc("/habitacion/{id:[0-9]+}", wrapHandler(roomController.Modify)).Methods("PUT")
+	router.HandleFunc("/habitacion/{id:[0-9]+}", wrapHandler(roomController.Delete)).Methods("DELETE")
 }
 
 func ReservationRoutes(router *mux.Router, logger *log.Logger) {
 	reservationController := controllers.NewReservationController(logger)
 	router.HandleFunc("/reserva", wrapHandler(reservationController.Get)).Methods("GET")
-	router.HandleFunc("/reserva/{id}", wrapHandler(reservationController.GetID)).Methods("GET")
+	router.HandleFunc("/reserva/{id:[0-9]+}", wrapHandler(reservationController.GetID)).Methods("GET")
 	router.HandleFunc("/reserva/{idUsuario}/{fechaEntrada}", wrapHandler(reservationController.GetByUsuarioYFecha)).Methods("GET")
 	router.HandleFunc("/reserva", wrapHandler(reservationController.Create)).Methods("POST")
-	router.HandleFunc("/reserva/{id}", wrapHandler(reservationController.Mod)).Methods("PUT")
-	router.HandleFunc("/reserva/{id}", wrapHandler(reservationController.Del)).Methods("DELETE")
+	router.HandleFunc("/reserva/{id:[0-9]+}", wrapHandler(reservationController.Mod)).Methods("PUT")
+	router.HandleFunc("/reserva/{id:[0-9]+}", wrapHandler(reservationController.Del)).Methods("DELETE")
 }
 
 func PaymentRoutes(router *mux.Router, logger *log.Logger) {
 	paymentController := controllers.NewPaymentController(logger)
 	router.HandleFunc("/pago", wrapHandler(paymentController.Get)).Methods("GET")
-	router.HandleFunc("/pago/{id}", wrapHandler(paymentController.GetID)).Methods("GET")
+	router.HandleFunc("/pago/{id:[0-9]+}", wrapHandler(paymentController.GetID)).Methods("GET")
 	router.HandleFunc("/pago", wrapHandler(paymentController.Create)).Methods("POST")
-	router.HandleFunc("/pago/{id}", wrapHandler(paymentController.Mod)).Methods("PUT")
-	router.HandleFunc("/pago/{id}", wrapHandler(paymentController.Del)).Methods("DELETE")
+	router.HandleFunc("/pago/{id:[0-9]+}", wrapHandler(paymentController.Mod)).Methods("PUT")
+	router.HandleFunc("/pago/{id:[0-9]+}", wrapHandler(paymentController.Del)).Methods("DELETE")
 }
 
 func PersonalRoutes(router *mux.Router, logger *log.Logger) {
 	personalController := controllers.NewPersonalController(logger)
 	router.HandleFunc("/personal", wrapHandler(personalController.Get)).Methods("GET")
-	router.HandleFunc("/personal/{id}", wrapHandler(personalController.GetID)).Methods("GET")
+	router.HandleFunc("/personal/{id:[0-9]+}", wrapHandler(personalController.GetID)).Methods("GET")
 	router.HandleFunc("/personal", wrapHandler(personalController.Asign)).Methods("POST")
-	router.HandleFunc("/personal/{id}", wrapHandler(personalController.Modify)).Methods("PUT")
-	router.HandleFunc("/personal/{id}", wrapHandler(personalController.Delete)).Methods("DELETE")
+	router.HandleFunc("/personal/{id:[0-9]+}", wrapHandler(personalController.Modify)).Methods("PUT")
+	router.HandleFunc("/personal/{id:[0-9]+}", wrapHandler(personalController.Delete)).Methods("DELETE")
 }
 
 func PersonalRoomRoutes(router *mux.Router, logger *log.Logger) {
 	personalRoomController := controllers.NewPersonalRoomController(logger)
 	router.HandleFunc("/personalRoom", wrapHandler(personalRoomController.Get)).Methods("GET")
-	router.HandleFunc("/personalRoom/{id}", wrapHandler(personalRoomController.GetID)).Methods("GET")
+	router.HandleFunc("/personalRoom/{id:[0-9]+}", wrapHandler(personalRoomController.GetID)).Methods("GET")
 	router.HandleFunc("/personalRoom", wrapHandler(personalRoomController.Asign)).Methods("POST")
-	router.HandleFunc("/personalRoom/{id}", wrapHandler(personalRoomController.Modify)).Methods("PUT")
-	router.HandleFunc("/personalRoom/{id}", wrapHandler(personalRoomController.Delete)).Methods("DELETE")
+	router.HandleFunc("/personalRoom/{id:[0-9]+}", wrapHandler(personalRoomController.Modify)).Methods("PUT")
+	router.HandleFunc("/personalRoom/{id:[0-9]+}", wrapHandler(personalRoomController.Delete)).Methods("DELETE")
 }
