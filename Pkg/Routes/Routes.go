@@ -63,6 +63,7 @@ func PaymentRoutes(router *mux.Router, logger *log.Logger) {
 	paymentController := controllers.NewPaymentController(logger)
 	router.HandleFunc("/pago", wrapHandler(paymentController.Get)).Methods("GET")
 	router.HandleFunc("/pago/{id:[0-9]+}", wrapHandler(paymentController.GetID)).Methods("GET")
+	router.HandleFunc("/pago/reserva/{id:[0-9]+}", wrapHandler(paymentController.GetByIdReserva)).Methods("GET")
 	router.HandleFunc("/pago", wrapHandler(paymentController.Create)).Methods("POST")
 	router.HandleFunc("/pago/{id:[0-9]+}", wrapHandler(paymentController.Mod)).Methods("PUT")
 	router.HandleFunc("/pago/{id:[0-9]+}", wrapHandler(paymentController.Del)).Methods("DELETE")

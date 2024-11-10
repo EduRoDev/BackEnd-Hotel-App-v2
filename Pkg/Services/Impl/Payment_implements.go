@@ -23,10 +23,23 @@ func (p Pago) Get() []entities.Pago {
 
 func (p Pago) GetID(pago entities.Pago) entities.Pago {
 	result := database.Database.Preload("Reserva").
-	Preload("Reserva.Usuario").
-	Preload("Reserva.Usuario.Acompañante").
-	Preload("Reserva.Habitacion").
-	First(&pago, pago.ID)
+		Preload("Reserva.Usuario").
+		Preload("Reserva.Usuario.Acompañante").
+		Preload("Reserva.Habitacion").
+		First(&pago, pago.ID)
+	if result.Error != nil {
+		return entities.Pago{}
+	}
+	return pago
+}
+
+func (p Pago) GetByIdReserva(idReserva int) entities.Pago {
+	var pago entities.Pago
+	result := database.Database.Preload("Reserva").
+		Preload("Reserva.Usuario").
+		Preload("Reserva.Usuario.Acompañante").
+		Preload("Reserva.Habitacion").Where("id_reserva = ?", idReserva).
+		First(&pago)
 	if result.Error != nil {
 		return entities.Pago{}
 	}
@@ -65,15 +78,11 @@ func (p Pago) Create(Pago entities.Pago) map[string]interface{} {
 		return helpers.Error(err, "Error al actualizar habitacion")
 	}
 
-	var pago entities.Pago
-	if pago.Estado == "pendiente" {
-		pago.Estado = "realizado"
-		if err := tx.Create(&Pago).Error; err != nil {
-			tx.Rollback()
-			return helpers.Error(err, "Error al crear el pago")
-		}
+	Pago.Estado = "realizado"
+	if err := tx.Create(&Pago).Error; err != nil {
+		tx.Rollback()
+		return helpers.Error(err, "Error al crear el pago")
 	}
-
 
 	tx.Commit()
 	return helpers.Success("Pago creado correctamente")
