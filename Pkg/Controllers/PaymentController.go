@@ -50,8 +50,26 @@ func (py PaymentController) GetID(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	w.WriteHeader(http.StatusAccepted)
+	json.NewEncoder(w).Encode(findPago) 
+	
+}
+
+func (py PaymentController) GetByIdReserva(w http.ResponseWriter, r *http.Request) {
+	w.Header().Set("Content-Type", "application/json")
+	vr := mux.Vars(r)
+	idStr, err := strconv.Atoi(vr["id"])
+	if err != nil {
+		rp := helpers.Error(err, "Error al obtener pago")
+		w.WriteHeader(http.StatusNotFound)
+		json.NewEncoder(w).Encode(rp)
+		return
+	}
+	pago := entities.Pago{IDReserva: idStr}
+	findPago := py.Py.GetByIdReserva(pago.IDReserva)
+	w.WriteHeader(http.StatusAccepted)
 	json.NewEncoder(w).Encode(findPago)
 }
+
 
 func (py PaymentController) Create(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")

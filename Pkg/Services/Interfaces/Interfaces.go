@@ -45,6 +45,7 @@ type Reservation interface {
 type Payment interface {
 	Get() []entities.Pago
 	GetID(Pago entities.Pago) entities.Pago
+	GetByIdReserva(idReserva int) entities.Pago
 	Create(Pago entities.Pago) map[string]interface{}
 	Mod(Pago entities.Pago) map[string]interface{}
 	Del(Pago entities.Pago) map[string]interface{}
