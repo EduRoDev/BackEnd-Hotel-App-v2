@@ -66,8 +66,7 @@ func createSchema(db *gorm.DB) {
 		&entities.Habitacion{},
 		&entities.Reserva{},
 		&entities.Pago{},
-		&entities.Personal{},
-		&entities.PersonalHabitacion{})
+		&entities.Administrador{})
 
 	// Comprobar si hay errores
 	if err != nil {

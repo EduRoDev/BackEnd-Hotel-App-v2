@@ -15,6 +15,7 @@ import (
 )
 
 func main() {
+
 	// Iniciar la base de datos
 	database.Init()
 
@@ -25,13 +26,12 @@ func main() {
 	router := mux.NewRouter()
 
 	// Rutas
+	routes.AdminRoutes(router, logger)
 	routes.UserRoutes(router, logger)
 	routes.CompanionRoutes(router, logger)
 	routes.RoomRoutes(router, logger)
 	routes.ReservationRoutes(router, logger)
 	routes.PaymentRoutes(router, logger)
-	routes.PersonalRoutes(router, logger)
-	routes.PersonalRoomRoutes(router, logger)
 
 	// Rutas de middlewares
 	cors := Middlewares_cors.CorsMiddleware(router)
@@ -47,7 +47,7 @@ func main() {
 
 	// Iniciar el servidor en un goroutine
 	go func() {
-		logger.Println("Starting server on port :8080")
+		logger.Println("Starting server in http://localhost:8080")
 		err := srv.ListenAndServe()
 		if err != nil {
 			logger.Fatal(err)
