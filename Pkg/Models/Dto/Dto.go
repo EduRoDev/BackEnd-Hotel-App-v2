@@ -49,12 +49,12 @@ type ReservaDTO struct {
 
 // DTO para Pago
 type PagoDTO struct {
-	ID         int       `json:"id_pago"`
-	IDReserva  int       `json:"id_reserva"`
-	Monto      float64   `json:"monto"`
-	Estado     string    `json:"estado"`
-	MetodoPago string    `json:"metodo_pago"`
-	FechaPago  string `json:"fecha_pago"`
+	ID         int     `json:"id_pago"`
+	IDReserva  int     `json:"id_reserva"`
+	Monto      float64 `json:"monto"`
+	Estado     string  `json:"estado"`
+	MetodoPago string  `json:"metodo_pago"`
+	FechaPago  string  `json:"fecha_pago"`
 }
 
 // DTO para Personal
@@ -71,4 +71,12 @@ type PersonalHabitacionDTO struct {
 	IDPersonal      int       `json:"id_personal"`
 	IDHabitacion    int       `json:"id_habitacion"`
 	FechaAsignacion time.Time `json:"fecha_asignacion"`
+}
+
+type AdministradorDTO struct {
+	Id       int    `json:"id_administrador"`
+	Nombre   string `json:"nombre"`
+	Apellido string `json:"apellido"`
+	Email    string `json:"email"`
+	Password string `json:"password"`
 }

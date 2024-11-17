@@ -94,34 +94,18 @@ func (Pago) TableName() string {
 	return "pago"
 }
 
-// Entidad Personal
-type Personal struct {
-	ID       int    `gorm:"primaryKey;autoIncrement" json:"id_personal"`
+// Entidad Reserva
+type Administrador struct {
+	Id       int    `gorm:"primaryKey;autoIncrement" json:"id_administrador"`
 	Nombre   string `gorm:"size:100" json:"nombre"`
 	Apellido string `gorm:"size:100" json:"apellido"`
-	Rol      string `gorm:"type:enum('recepcionista','limpieza','gerente','botones','supervisor')" json:"rol"`
+	Email    string `gorm:"size:100;unique" json:"email"`
+	Password string `gorm:"size:100" json:"password"`
 }
 
-type Personals []Personal
+type Administradores []Administrador
 
-// Definir TableName para Personal
-func (Personal) TableName() string {
-	return "personal"
-}
-
-// Entidad PersonalHabitacion
-type PersonalHabitacion struct {
-	ID              int        `gorm:"primaryKey;autoIncrement" json:"id_personal_habitacion"`
-	IDPersonal      int        `json:"id_personal"`
-	IDHabitacion    int        `json:"id_habitacion"`
-	FechaAsignacion time.Time  `json:"fecha_asignacion"`
-	Personal        Personal   `gorm:"foreignKey:IDPersonal" json:"personal"`
-	Habitacion      Habitacion `gorm:"foreignKey:IDHabitacion" json:"habitacion"`
-}
-
-type PersonalHabitacions []PersonalHabitacion
-
-// Definir TableName para PersonalHabitacion
-func (PersonalHabitacion) TableName() string {
-	return "personal_habitacion"
+// Definir TableName para Administrador
+func (Administrador) TableName() string {
+	return "administrador"
 }

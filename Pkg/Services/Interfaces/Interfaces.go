@@ -52,18 +52,7 @@ type Payment interface {
 	Cancel(idReserva int) map[string]interface{}
 }
 
-type Personal interface {
-	Get() []entities.Personal
-	GetID(Personal entities.Personal) entities.Personal
-	Asing(Personal entities.Personal) map[string]interface{}
-	Mod(Personal entities.Personal) map[string]interface{}
-	Del(Personal entities.Personal) map[string]interface{}
-}
-
-type PersonalHabitacion interface {
-	Get() []entities.PersonalHabitacion
-	GetID(PersonalHabitacion entities.PersonalHabitacion) entities.PersonalHabitacion
-	Asing(PersonalHabitacion entities.PersonalHabitacion) map[string]interface{}
-	Mod(PersonalHabitacion entities.PersonalHabitacion) map[string]interface{}
-	Del(PersonalHabitacion entities.PersonalHabitacion) map[string]interface{}
+type Administrador interface {
+	Login(email string, password string) (string, error)
+	Create(admin entities.Administrador) map[string]interface{}
 }
