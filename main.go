@@ -18,6 +18,7 @@ func main() {
 
 	// Iniciar la base de datos
 	database.Init()
+	database.Connect()
 
 	// Crear un nuevo logger
 	logger := log.New(os.Stdout, "HOTEL-API: ", log.LstdFlags)

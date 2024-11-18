@@ -93,19 +93,3 @@ type Pagos []Pago
 func (Pago) TableName() string {
 	return "pago"
 }
-
-// Entidad Reserva
-type Administrador struct {
-	Id       int    `gorm:"primaryKey;autoIncrement" json:"id_administrador"`
-	Nombre   string `gorm:"size:100" json:"nombre"`
-	Apellido string `gorm:"size:100" json:"apellido"`
-	Email    string `gorm:"size:100;unique" json:"email"`
-	Password string `gorm:"size:100" json:"password"`
-}
-
-type Administradores []Administrador
-
-// Definir TableName para Administrador
-func (Administrador) TableName() string {
-	return "administrador"
-}

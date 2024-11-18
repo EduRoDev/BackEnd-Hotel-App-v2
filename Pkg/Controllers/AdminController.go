@@ -9,6 +9,7 @@ import (
 	helpers "github.com/EduRoDev/BackEnd-Hotel-App-v2/Pkg/Helpers"
 	dto "github.com/EduRoDev/BackEnd-Hotel-App-v2/Pkg/Models/Dto"
 	entities "github.com/EduRoDev/BackEnd-Hotel-App-v2/Pkg/Models/Entities"
+	esquemas "github.com/EduRoDev/BackEnd-Hotel-App-v2/Pkg/Models/Esquemas"
 	impl "github.com/EduRoDev/BackEnd-Hotel-App-v2/Pkg/Services/Impl"
 	interfaces "github.com/EduRoDev/BackEnd-Hotel-App-v2/Pkg/Services/Interfaces"
 	"github.com/didip/tollbooth"
@@ -49,7 +50,18 @@ func (am *AdminController) Login(w http.ResponseWriter, r *http.Request) {
 	}
 
 	w.WriteHeader(http.StatusAccepted)
-	json.NewEncoder(w).Encode(token)
+	json.NewEncoder(w).Encode(map[string]string{"token": token})
+}
+
+func (am *AdminController) GetAdministradoresHandler(w http.ResponseWriter, r *http.Request) {
+	administradores, err := am.admin.GetAllAdministradores()
+	if err != nil {
+		http.Error(w, "Error al obtener administradores", http.StatusInternalServerError)
+		return
+	}
+
+	w.Header().Set("Content-Type", "application/json")
+	json.NewEncoder(w).Encode(administradores)
 }
 
 func (am *AdminController) Create(w http.ResponseWriter, r *http.Request) {
@@ -62,7 +74,7 @@ func (am *AdminController) Create(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	data := entities.Administrador{
+	data := esquemas.Administrador{
 		Nombre:   admin.Nombre,
 		Apellido: admin.Apellido,
 		Email:    admin.Email,

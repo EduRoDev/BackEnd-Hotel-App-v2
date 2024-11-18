@@ -75,4 +75,5 @@ func AdminRoutes(router *mux.Router, logger *log.Logger) {
 	adminController := controllers.NewAdminController(logger)
 	router.HandleFunc(prefix+"/admin/login", wrapHandler(adminController.Login)).Methods("POST")
 	router.HandleFunc(prefix+"/admin", wrapHandler(adminController.Create)).Methods("POST")
+	router.HandleFunc(prefix+"/admin", wrapHandler(adminController.GetAdministradoresHandler)).Methods("GET")
 }
