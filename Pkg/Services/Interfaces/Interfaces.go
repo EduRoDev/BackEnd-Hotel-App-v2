@@ -4,6 +4,7 @@ import (
 	"time"
 
 	entities "github.com/EduRoDev/BackEnd-Hotel-App-v2/Pkg/Models/Entities"
+	esquemas "github.com/EduRoDev/BackEnd-Hotel-App-v2/Pkg/Models/Esquemas"
 )
 
 type User interface {
@@ -54,5 +55,6 @@ type Payment interface {
 
 type Administrador interface {
 	Login(email string, password string) (string, error)
-	Create(admin entities.Administrador) map[string]interface{}
+	GetAllAdministradores() ([]esquemas.Administrador, error)
+	Create(admin esquemas.Administrador) map[string]interface{}
 }

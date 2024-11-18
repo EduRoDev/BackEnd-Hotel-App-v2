@@ -1,5 +1,7 @@
 package entities
 
+import esquemas "github.com/EduRoDev/BackEnd-Hotel-App-v2/Pkg/Models/Esquemas"
+
 type LoginResponse struct {
 	Token   string  `json:"token"`
 	Reserva Reserva `json:"reserva"`
@@ -11,8 +13,8 @@ type LoginRequest struct {
 }
 
 type loginResponseAdmin struct {
-	Token         string        `json:"token"`
-	Administrador Administrador `json:"administrador"`
+	Token         string                 `json:"token"`
+	Administrador esquemas.Administrador `json:"administrador"`
 }
 
 type LoginRequestAdmin struct {
