@@ -50,8 +50,8 @@ func (py PaymentController) GetID(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	w.WriteHeader(http.StatusAccepted)
-	json.NewEncoder(w).Encode(findPago) 
-	
+	json.NewEncoder(w).Encode(findPago)
+
 }
 
 func (py PaymentController) GetByIdReserva(w http.ResponseWriter, r *http.Request) {
@@ -69,7 +69,6 @@ func (py PaymentController) GetByIdReserva(w http.ResponseWriter, r *http.Reques
 	w.WriteHeader(http.StatusAccepted)
 	json.NewEncoder(w).Encode(findPago)
 }
-
 
 func (py PaymentController) Create(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
@@ -152,17 +151,15 @@ func (py PaymentController) Cancel(w http.ResponseWriter, r *http.Request) {
 	idStr, err := strconv.Atoi(vr["id"])
 	if err != nil {
 		rp := helpers.Error(err, "Error al obtener ID de la reserva")
-		w.WriteHeader(http.StatusBadRequest) // Cambiado a 400 Bad Request
+		w.WriteHeader(http.StatusBadRequest)
 		json.NewEncoder(w).Encode(rp)
 		return
 	}
 
-	// Llamar al servicio para cancelar la reserva
 	resultado := py.Py.Cancel(idStr)
 
-	// Verificar si hubo un error en la operación
 	if resultado["status"] == "error" {
-		w.WriteHeader(http.StatusInternalServerError) // Error en el servidor si la operación falló
+		w.WriteHeader(http.StatusInternalServerError)
 		json.NewEncoder(w).Encode(resultado)
 		return
 	}
